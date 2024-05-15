@@ -8,11 +8,11 @@ import java.util.Objects;
 @Entity
 public class Producto {
     @Basic
-    @Column(name = "nombrep")
+    @Column(name = "nombreP")
     private String nombreP;
 
     @Id
-    @Column(name = "idpr")
+    @Column(name = "idPr")
     private String idPr;
     @Basic
     @Column(name = "precio")
@@ -101,5 +101,6 @@ public class Producto {
     public void setProveedoresByIdProd(Proveedores proveedoresByIdProd) {
         this.proveedoresByIdProd = proveedoresByIdProd;
     }
+
 
 }

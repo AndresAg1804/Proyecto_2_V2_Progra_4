@@ -12,6 +12,8 @@ async function mainrender(){
     } catch(error){
         return;
     }
+    console.log("mainrender");
+    await one();
 }
 
 function renderheader(){
@@ -19,20 +21,16 @@ function renderheader(){
             <div>
                 <div>
                     <p>Facturación </p> <p>electronica</p></div>
-                <div><img class="logo" src="../../../static/Images/logo.png" alt=""/></div>
+<!--                <div><img class="logo" src="../../../static/Images/logo.png" /></div>-->
             </div>
 
             <ul class="Menu">
                 <li>
-                    <a href="/Presentation/AcercaDe/view.html">Acerca De</a>
-                    <a href="templates/Presentation/AcercaDe/view.html">Acerca De</a>
-                </li>
-                <li>
-                    <a href="/presentation/Login/show">Login</a>
+                    <a href="#">Acerca De</a>
                 </li>
             </ul>
         `;
-        document.querySelector('#header').innerHTML = html;
+        document.getElementById('header').innerHTML = html;
 }
 function renderfoot(){
     html=`
@@ -40,5 +38,5 @@ function renderfoot(){
             facturasOnline@best.team.com
         </footer>
         `;
-    document.querySelector('#footer').innerHTML = html;
+    document.getElementById('footer').innerHTML = html;
 }

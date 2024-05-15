@@ -20,6 +20,18 @@ public class Usuarios {
     @JoinColumn(name = "idprov", referencedColumnName = "idP")
     private Proveedores proveedoresByIdprov;
 
+    public Usuarios(String usern,String pasw,String tipo) {
+        this.usern = usern;
+        this.pasw = pasw;
+        this.tipo = tipo;
+    }
+
+    public Usuarios() {
+        this.usern = "";
+        this.pasw = "";
+        this.tipo = "";
+    }
+
     public String getUsern() {
         return usern;
     }
@@ -63,5 +75,9 @@ public class Usuarios {
 
     public void setProveedoresByIdprov(Proveedores proveedoresByIdprov) {
         this.proveedoresByIdprov = proveedoresByIdprov;
+    }
+
+    public Usuarios clone(){
+        return new Usuarios(usern,pasw,tipo);
     }
 }

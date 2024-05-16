@@ -4,12 +4,12 @@ import com.example.proyecto_2_v2.logic.Usuarios;
 import com.example.proyecto_2_v2.security.UserDetailsIMP;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 
 @RestController
 @RequestMapping("/api/login")
@@ -17,6 +17,7 @@ public class Login {
     @PostMapping("/login")
     public Usuarios login(@RequestBody Usuarios form, HttpServletRequest request) {
         try {
+            System.out.printf("Juan Pablo Cartin");
             request.login(form.getUsern(), form.getPasw());//pero no entiendo donde esta defindio este metod en relacion a el UserRepository ???
         } catch (ServletException e) {
             System.out.println("Okay but why" );
@@ -36,9 +37,9 @@ public class Login {
         } catch (ServletException e) {
         }
     }
-
-    @GetMapping("/usuarios_actual")
+    @GetMapping("/ua")
     public Usuarios getCurrentUser(@AuthenticationPrincipal UserDetailsIMP user) {
+        System.out.println("EN /api/login/usuarios-actual");
         return new Usuarios(user.getUser().getUsern(), null, user.getUser().getTipo());
     }
 }

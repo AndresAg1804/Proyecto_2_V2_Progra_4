@@ -1,9 +1,5 @@
 
 
-var mainUSER ={
-    logged: false,
-    user : {id:"", rol:""}
-}
 
 async function mainrender(){
     try{

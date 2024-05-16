@@ -7,7 +7,7 @@ var loginstate ={
 }
 
 async function checkuser(){
-    let request = new Request(api_login+'/current-user', {method: 'GET'});
+    let request = new Request(api_login+'/ua', {method: 'GET'});
     const response = await fetch(request);//se manda, send
     if (response.ok) {
         loginstate.logged = true;
@@ -80,10 +80,7 @@ function login(){
     //pero cuando envio el request ????
     (async ()=>{
         const response = await fetch(request); //jsuto aqui, aqui se envia el request
-        if (!response.ok) {//////////////c
-            errorMessage(response.status);
-            return;
-        }
+        if (!response.ok) {errorMessage(response.status);return;}
         document.location="/Pages/LoginPage/LoginView.html";
     })();
 }

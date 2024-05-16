@@ -2,18 +2,21 @@ package com.example.proyecto_2_v2.security;
 
 
 import com.example.proyecto_2_v2.logic.Usuarios;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
 public class UserDetailsIMP implements UserDetails{
     private Usuarios u;
-
     public UserDetailsIMP(Usuarios user) {
         this.u = user;
     }
@@ -28,6 +31,7 @@ public class UserDetailsIMP implements UserDetails{
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(u.getTipo()));
         return authorities;
+
     }
 
     @Override

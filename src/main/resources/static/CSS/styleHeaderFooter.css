@@ -64,7 +64,21 @@ body{
     max-height: 90%;
 }
 
-#special form{
-    margin-top: 10px;
+#mainforms{
+    display: block;
+
 }
+.container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+
 

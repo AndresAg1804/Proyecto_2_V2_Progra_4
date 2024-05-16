@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <script src="ControllerLog.js"></script>
+
+
+
+
+    <script src="ControllerNewuser.js"></script>
+    <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
+    <link rel="stylesheet" href="../../CSS/productos.css">
+    <link rel="stylesheet" href="../../CSS/Menu.css">
+    <script src="../../Javascript/render_header_foot.js"></script>
+</head>
+<body>
+<div id="header" class="header"></div>
+
+<div class="container">
+    <div id="mainforms" class="mainforms">
+        <h1>New User :)</h1>
+        <label for="NUusern">Username:</label>
+        <input type="text" id="NUusern" name="NUusern" placeholder="Enter Username" required>
+        <label for="NUpasw">Password:</label>
+        <input type="password" id="NUpasw" name="NUpasw" placeholder="Enter Password" required>
+
+
+        <label>User Type:</label>
+        <input type="radio" id="admRadio" name="userType" value="ADM" checked>ADM
+        <input type="radio" id="proRadio" name="userType" value="PRO">PRO
+
+        <div id="proInputs" style="display: none;">
+            <label for="NUproveedorNombre">Provider Name:</label>
+            <input type="text" id="NUproveedorNombre" name="NUproveedorNombre" placeholder="Enter Provider Name" value="000">
+
+            <label for="NUproveedorId">Provider ID:</label>
+            <input type="text" id="NUproveedorId" name="NUproveedorId" placeholder="Enter Provider ID" value="000">
+
+        </div>
+        <input id="DONEnewU" class="boton" type="button" value="DONE">
+    </div>
+</div>
+
+<div id="footer" class="footer"></div>
+
+
+</body>
+</html>

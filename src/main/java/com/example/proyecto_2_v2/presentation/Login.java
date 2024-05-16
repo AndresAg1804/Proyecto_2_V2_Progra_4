@@ -5,6 +5,7 @@ import com.example.proyecto_2_v2.security.UserDetailsIMP;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +39,16 @@ public class Login {
         }
     }
     @GetMapping("/ua")
-    public Usuarios getCurrentUser(@AuthenticationPrincipal UserDetailsIMP user) {
-        System.out.println("EN /api/login/usuarios-actual");
-        return new Usuarios(user.getUser().getUsern(), null, user.getUser().getTipo());
+    public ResponseEntity<Usuarios> getCurrentUser(@AuthenticationPrincipal UserDetailsIMP user) {
+
+        if(user!=null) {
+            Usuarios usuario = new Usuarios(user.getUser().getUsern(), null, user.getUser().getTipo());
+            return ResponseEntity.ok(usuario);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
+
 }
 

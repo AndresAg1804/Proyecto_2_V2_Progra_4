@@ -8,8 +8,7 @@ async function mainrender(){
     } catch(error){
         return;
     }
-    console.log("mainrender");
-    await one();
+
 }
 
 function renderheader(){

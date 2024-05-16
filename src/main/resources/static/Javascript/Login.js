@@ -67,6 +67,7 @@ function setEVENTES(){
         document.getElementById('LogoutA').addEventListener('click', logout);
         console.log("Okay we good");
     }
+    document.getElementById("newU_A").addEventListener('click',MOVE2newUser)
 }
 function login(){
     let Usuario={usern:document.getElementById("usern").value,
@@ -95,6 +96,12 @@ function logout(event){
         document.location="/Pages/LoginPage/LoginView.html";
     })();
 }
+function MOVE2newUser(){
+    document.location="/Pages/NewUser/NewuserView.html";
+}
+
+
+
 function errorMessage(status,place){
     switch(status){
         case 404: error= "Registro no encontrado"; break;

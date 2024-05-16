@@ -11,7 +11,16 @@ public class Proveedores {
     @Column(name = "nombreP")
     private String nombreP;
 
+    @SequenceGenerator(
+            name="pro_sequence",
+            sequenceName = "pro_sequence",
+            allocationSize = 1
+    )
     @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "pro_sequence"
+    )
     @Column(name = "idP")
     private String idP;
     @Basic
@@ -93,5 +102,23 @@ public class Proveedores {
 
     public void setUsuariosByIdP(Collection<Usuarios> usuariosByIdP) {
         this.usuariosByIdP = usuariosByIdP;
+    }
+
+    public Proveedores(String nombreP, Byte aprobado, Collection<Clientes> clientesByIdP, Collection<Facturas> facturasByIdP, Collection<Producto> productosByIdP, Collection<Usuarios> usuariosByIdP) {
+        this.nombreP = nombreP;
+        this.aprobado = aprobado;
+        this.clientesByIdP = clientesByIdP;
+        this.facturasByIdP = facturasByIdP;
+        this.productosByIdP = productosByIdP;
+        this.usuariosByIdP = usuariosByIdP;
+    }
+
+    public Proveedores() {
+        this.nombreP = "";
+        this.aprobado = (byte) 0;
+        this.clientesByIdP = null;
+        this.facturasByIdP = null;
+        this.productosByIdP = null;
+        this.usuariosByIdP = null;
     }
 }

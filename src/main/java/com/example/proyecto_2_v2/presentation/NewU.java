@@ -24,13 +24,15 @@ public class NewU {
     public Usuarios newUser(@RequestBody Usuarios form, HttpServletRequest request) {
         var encoder = new BCryptPasswordEncoder();
         try {
-            s.addUsuario(
-                    form.getUsern(),
-                    "{bcrypt}" + encoder.encode(form.getPasw()),
-                    form.getTipo(),
-                    form.getProveedoresByIdprov().getNombreP(),
-                    form.getProveedoresByIdprov().getIdP()
-            );
+
+                s.addUsuario(
+                        form.getUsern(),
+                        "{bcrypt}" + encoder.encode(form.getPasw()),
+                        form.getTipo(),
+                        form.getProveedoresByIdprov().getNombreP(),
+                        form.getProveedoresByIdprov().getIdP()
+                );
+
         }
         catch (Exception e){
 

@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="../../CSS/productos.css">
     <link rel="stylesheet" href="../../CSS/Menu.css">
     <script src="../../Javascript/render_header_foot.js"></script>
+
 </head>
 <body>
 <div id="header" class="header"></div>
 
 <div class="container">
+    <h2>New User</h2>
     <div id="mainforms" class="mainforms">
-        <h1>New User :)</h1>
         <label for="NUusern">Username:</label>
         <input type="text" id="NUusern" name="NUusern" placeholder="Enter Username" required>
         <label for="NUpasw">Password:</label>
@@ -27,14 +28,17 @@
 
 
         <label>User Type:</label>
-        <input type="radio" id="admRadio" name="userType" value="ADM" checked>ADM
-        <input type="radio" id="proRadio" name="userType" value="PRO">PRO
+        <br>
+        <label>ADM</label>
+        <input type="radio" id="admRadio" name="userType" value="ADM" checked>
+        <label>PRO</label>
+        <input type="radio" id="proRadio" name="userType" value="PRO">
 
         <div id="proInputs" style="display: none;">
-            <label for="NUproveedorNombre">Provider Name:</label>
+            <label for="NUproveedorNombre">Name:</label>
             <input type="text" id="NUproveedorNombre" name="NUproveedorNombre" placeholder="Enter Provider Name" value="000">
 
-            <label for="NUproveedorId">Provider ID:</label>
+            <label for="NUproveedorId">ID(social number):</label>
             <input type="text" id="NUproveedorId" name="NUproveedorId" placeholder="Enter Provider ID" value="000">
 
         </div>

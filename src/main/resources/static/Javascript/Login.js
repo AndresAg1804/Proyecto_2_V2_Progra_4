@@ -43,11 +43,14 @@ function setEVENTES(){
                     <a href="#">Acerca De</a>
                 </li>
 
+
             </ul>
         `;
         document.getElementById('header').innerHTML = html;
         document.getElementById('LoginB').addEventListener("click",login);
 
+        document.getElementById("newU_A").addEventListener('click',MOVE2newUser);
+        //ojo que si se hace un get element by ID que no existe error
     }
     else{
         html=`
@@ -62,7 +65,7 @@ function setEVENTES(){
                     <a id="LogoutA" class="LogoutA" href="#">Logout</a>
                 </li>
                 <li>
-                    <div class="user">&nbsp &nbsp ${loginstate.Usuarios.usern}</div>
+                    <a class="user" href="#">${loginstate.Usuarios.usern}</a>
                 </li>
             </ul>
         `;
@@ -70,7 +73,7 @@ function setEVENTES(){
         document.getElementById('LogoutA').addEventListener('click', logout);
         console.log("Okay we good");
     }
-    document.getElementById("newU_A").addEventListener('click',MOVE2newUser)
+
 }
 function login(){
     let Usuario={usern:document.getElementById("usern").value,
@@ -102,8 +105,6 @@ function logout(event){
 function MOVE2newUser(){
     document.location="/Pages/NewUser/NewuserView.html";
 }
-
-
 
 function errorMessage(status,place){
     switch(status){

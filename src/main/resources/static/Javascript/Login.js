@@ -3,7 +3,7 @@ var api_login=backend+'/login';//cual restcontroller
 
 var loginstate ={
     logged: false,
-    user : {id:"", rol:""}
+    Usuarios : {usern:"", tipo:""}
 }
 
 async function checkuser(){
@@ -11,7 +11,7 @@ async function checkuser(){
     const response = await fetch(request);//se manda, send
     if (response.ok) {
         loginstate.logged = true;
-        loginstate.user = await response.json();
+        loginstate.Usuarios = await response.json();
     }
     else {
         console.log("Okay we on checkuser ");
@@ -20,6 +20,7 @@ async function checkuser(){
 }
 async function one(){
     console.log("Okay we on login ");
+
     await checkuser();
     console.log("Okay we out of checkuser ");
     if (!loginstate.logged && document.location.pathname != "/Pages/LoginPage/LoginView.html") {
@@ -61,7 +62,7 @@ function setEVENTES(){
                     <a id="LogoutA" class="LogoutA" href="#">Logout</a>
                 </li>
                 <li>
-                    <div class="user">&nbsp &nbsp ${loginstate.user.id}</div>
+                    <div class="user">&nbsp &nbsp ${loginstate.Usuarios.usern}</div>
                 </li>
             </ul>
         `;

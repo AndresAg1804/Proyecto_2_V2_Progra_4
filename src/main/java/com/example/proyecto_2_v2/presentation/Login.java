@@ -24,10 +24,8 @@ public class Login {
             System.out.println("Okay but why" );
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        System.out.println("Okay I can work this this.........");
         Authentication auth = (Authentication) request.getUserPrincipal();
         Usuarios user = ((UserDetailsIMP) auth.getPrincipal()).getUser();
-        System.out.println("no way");
         return new Usuarios(user.getUsern(), null, user.getTipo());
     }
 

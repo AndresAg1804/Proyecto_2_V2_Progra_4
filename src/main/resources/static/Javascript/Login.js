@@ -49,7 +49,6 @@ function setEVENTES(){
 
     }
     else{
-        document.location = "/Pages/FacturarPage/FacturarView.html";
         html=`
             <div>
                 <div>
@@ -60,6 +59,9 @@ function setEVENTES(){
             <ul class="Menu">
                 <li>
                     <a id="LogoutA" class="LogoutA" href="#">Logout</a>
+                </li>
+                <li>
+                    <div class="user">&nbsp &nbsp ${loginstate.user.id}</div>
                 </li>
             </ul>
         `;
@@ -82,7 +84,7 @@ function login(){
     (async ()=>{
         const response = await fetch(request); //jsuto aqui, aqui se envia el request
         if (!response.ok) {errorMessage(response.status);return;}
-        document.location="/Pages/LoginPage/LoginView.html";
+        document.location="/Pages/FacturarPage/FacturarView.html";
     })();
 }
 

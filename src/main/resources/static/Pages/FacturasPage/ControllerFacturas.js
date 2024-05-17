@@ -1,3 +1,11 @@
+var apiC = backend + "/facturas";
+
+var stateFac = {
+    list: new Array(),
+    item: { numfact: "", total: ""},
+    mode: "" // ADD, EDIT
+}
+
 document.addEventListener("DOMContentLoaded",MenuMAINRENDER);
 async function MenuMAINRENDER(event) {
     try{ await mainrender();
@@ -17,8 +25,10 @@ function renderSearch(){
     document.getElementById('busqueda').innerHTML = html;
     document.getElementById('searchCli').addEventListener('click', search);
 
+
 }
 
 function search(){
 
 }
+

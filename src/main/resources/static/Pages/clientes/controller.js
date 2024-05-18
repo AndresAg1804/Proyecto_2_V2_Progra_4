@@ -1,8 +1,8 @@
 var api = backend + '/clientes';
 
-var state = {
+var stateC = {
     list: new Array(),
-    item: { nombreC: "", idC: "", correo: "", telefono: ""},
+    item: { nombreC: "", idC: "", correo: "", telefono: 0},
     mode: "" // ADD, EDIT
 }
 
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded",loaded);
 document.addEventListener("visibilitychange",unloaded);
 
 async function loaded(event){
-    try{ await menu();} catch(error){return;} //esto renderiza el header
+     //esto renderiza el header
 
     document.getElementById("search").addEventListener("click",search); //boton de search en html
     document.getElementById("new").addEventListener("click",ask); //boton para abrir el menu de creacion de persona
@@ -36,7 +36,7 @@ async function loaded(event){
 
 async function unloaded(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
-        sessionStorage.setItem("personas",JSON.stringify(state));
+        sessionStorage.setItem("clientes",JSON.stringify(state));
     }
 }
 
@@ -45,11 +45,7 @@ function fetchAndList(){ //metodo para obtener la lista actual de personas
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        state.list = await response.json(); /*
-         @GetMapping
-         public List<Persona> read() {
-        return personaRepository.findAll(); retorna la lista del repository
-    }*/
+        state.list = await response.json();
         render_list(); //una vez cargada la lista llama a la funcion de render_list
     })();
 }

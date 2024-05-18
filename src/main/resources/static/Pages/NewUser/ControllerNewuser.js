@@ -50,8 +50,8 @@ function GOLOGINVIEW(){
 function addNEWUSER(){
     if(document.getElementById("admRadio").checked){
         let proveedor = {
-            nombreP: document.getElementById("NUproveedorNombre").value,
-            idP: document.getElementById("NUproveedorId").value
+            nombreP: '000',
+            idP: '000'
             // Add other attributes of Proveedores as needed
         };
 

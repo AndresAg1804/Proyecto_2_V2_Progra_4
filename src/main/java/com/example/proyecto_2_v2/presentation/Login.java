@@ -41,6 +41,7 @@ public class Login {
 
         if(user!=null) {
             Usuarios usuario = new Usuarios(user.getUser().getUsern(), null, user.getUser().getTipo());
+            usuario.setProveedoresByIdprov(user.getPROVEDOR());
             return ResponseEntity.ok(usuario);
         }
         else {

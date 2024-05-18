@@ -1,6 +1,7 @@
 package com.example.proyecto_2_v2.security;
 
 
+import com.example.proyecto_2_v2.logic.Proveedores;
 import com.example.proyecto_2_v2.logic.Usuarios;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -63,4 +64,8 @@ public class UserDetailsIMP implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+    public String getidP(){return u.getProveedoresByIdprov().getIdP();}
+
+    public Proveedores getPROVEDOR(){return u.getProveedoresByIdprov();}
 }

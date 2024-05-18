@@ -5,11 +5,7 @@ var loginstate ={
 
 document.addEventListener("DOMContentLoaded",MAINRENDER);
 async function MAINRENDER(event) {
-    try{ await mainrender();} catch(error){return;}
-    await dos();
+    try{ await checkuser();} catch(error){return;}
+    await mainrender();
 }
 
-async function dos(){
-    await checkuser();
-    setEVENTES();
-}

@@ -41,9 +41,7 @@ function renderheader(){
                 <li>
                     <a href="#" id="gologin">Login</a>
                 </li>
-                <li>
-                    <a href="#" id="goproductos">Productos</a>
-                </li>
+                
 
 
             </ul>
@@ -52,7 +50,7 @@ function renderheader(){
         document.getElementById('LoginB').addEventListener("click",login);
         document.getElementById("newU_A").addEventListener('click',MOVE2newUser);
         document.getElementById('gologin').addEventListener("click",GOLOGINVIEW);
-        document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
+
         //ojo que si se hace un get element by ID que no existe error
     }
     else{
@@ -69,12 +67,16 @@ function renderheader(){
                 </li>
                 <li>
                     <a class="user" href="#">${loginstate.Usuarios.usern}</a>
-                    <a class="user" href="#">${loginstate.Usuarios.proveedoresByIdprov.idP}</a>
+                    
+                </li>
+                <li>
+                    <a href="#" id="goproductos">Productos</a>
                 </li>
             </ul>
         `;
         document.getElementById('header').innerHTML = html;
         document.getElementById('LogoutA').addEventListener('click', logout);
+        document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
 
     }
 }
@@ -90,5 +92,5 @@ function GOLOGINVIEW(){
     document.location="/Pages/LoginPage/LoginView.html";
 }
 function GOPRODUCTOS(){
-    document.location="/Pages/ProductosPage/ProductosView.html";
+    document.location="/Pages/Productos/ProductosView.html";
 }

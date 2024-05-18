@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -25,6 +26,7 @@ public interface ProductosRepository extends CrudRepository<Producto, String>{
 
     @Query("SELECT p FROM Producto p WHERE p.proveedoresByIdProd.idP = ?1 AND p.idPr = ?2")
     List<Producto> findAllByProveedorIdAndProductoId(String idProveedor, String idProducto);
+
 
 
 }

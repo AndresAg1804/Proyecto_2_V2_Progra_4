@@ -47,8 +47,10 @@ function renderheader(){
             </ul>
         `;
         document.getElementById('header').innerHTML = html;
-        document.getElementById('LoginB').addEventListener("click",login);
-        document.getElementById("newU_A").addEventListener('click',MOVE2newUser);
+        if(document.location.pathname == "/Pages/LoginPage/LoginView.html") {
+            document.getElementById('LoginB').addEventListener("click", login);
+            document.getElementById("newU_A").addEventListener('click', MOVE2newUser);
+        }
         document.getElementById('gologin').addEventListener("click",GOLOGINVIEW);
 
         //ojo que si se hace un get element by ID que no existe error

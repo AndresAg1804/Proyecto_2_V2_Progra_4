@@ -30,20 +30,6 @@ public class Producto {
     private Proveedores proveedoresByIdProd;
 
 
-    public Producto(String idPr, String nombreP,Double precio,Integer cant) {
-        this.idPr = idPr;
-        this.nombreP=nombreP;
-        this.precio=precio;
-        this.cant=cant;
-    }
-
-    public Producto() {
-        this.idPr = "";
-        this.nombreP="";
-        this.precio=0.0;
-        this.cant=0;
-    }
-
     public String getNombreP() {
         return nombreP;
     }

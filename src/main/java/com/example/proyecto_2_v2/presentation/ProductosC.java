@@ -37,7 +37,7 @@ public class ProductosC {
 }
     * */
 
-    @PostMapping()
+    @PostMapping("/add")
     public void save(@RequestBody Producto producto) {
         //Proveedores prove = usuario.getProveedoresByIdprov();
         try {

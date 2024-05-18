@@ -18,63 +18,14 @@ async function checkuser(){
         loginstate.logged = false;
     }
 }
-async function one(){
-    console.log("Okay we on login ");
+async function go_to_loginJS(){
 
     await checkuser();
-    console.log("Okay we out of checkuser ");
+
     if (!loginstate.logged && document.location.pathname != "/Pages/LoginPage/LoginView.html") {
-        document.location = "/Pages/LoginPage/LoginView.html";//Si no encuentra a nadie logedao lodeja en la pestana inicial
-        //throw new Error("Usuario no autorizado");
+        document.location = "/Pages/LoginPage/LoginView.html";
     }
-    setEVENTES();
-}
-function setEVENTES(){
-    if (!loginstate.logged){
-        html=`
-            <div>
-                <div>
-                    <p>Facturación </p> <p>electronica</p></div>
-<!--                <div><img class="logo" src="../../../static/Images/logo.png" alt=""/></div>-->
-            </div>
-
-            <ul class="Menu">
-                <li>
-                    <a href="#">Acerca De</a>
-                </li>
-
-
-            </ul>
-        `;
-        document.getElementById('header').innerHTML = html;
-        document.getElementById('LoginB').addEventListener("click",login);
-
-        document.getElementById("newU_A").addEventListener('click',MOVE2newUser);
-        //ojo que si se hace un get element by ID que no existe error
-    }
-    else{
-        html=`
-            <div>
-                <div>
-                    <p>Facturación </p> <p>electronica</p></div>
-<!--                <div><img class="logo" src="../../../static/Images/logo.png" alt=""/></div>-->
-            </div>
-
-            <ul class="Menu">
-                <li>
-                    <a id="LogoutA" class="LogoutA" href="#">Logout</a>
-                </li>
-                <li>
-                    <a class="user" href="#">${loginstate.Usuarios.usern}</a>
-                    <a class="user" href="#">${loginstate.Usuarios.proveedoresByIdprov.idP}</a>
-                </li>
-            </ul>
-        `;
-        document.getElementById('header').innerHTML = html;
-        document.getElementById('LogoutA').addEventListener('click', logout);
-        console.log("Okay we good");
-    }
-
+    mainrender();
 }
 function login(){
     let Usuario={usern:document.getElementById("usern").value,

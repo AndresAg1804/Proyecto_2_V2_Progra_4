@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded",MAINRENDER);
 async function MAINRENDER(event) {
     try{ await mainrender();} catch(error){return;}
     await newUser();
-    await addLogin();
 }
 async function  newUser(){
     document.getElementById("proRadio").addEventListener("change", function() {
@@ -23,30 +22,8 @@ async function  newUser(){
     });
     document.getElementById("DONEnewU").addEventListener('click',addNEWUSER)
 }
-async function addLogin(){
-    html=`
-            <div>
-                <div>
-                    <p>Facturación </p> <p>electronica</p></div>
-<!--                <div><img class="logo" src="../../../static/Images/logo.png" alt=""/></div>-->
-            </div>
 
-            <ul class="Menu">
-                <li>
-                    <a href="#">Acerca De</a>
-                </li>
-                <li>
-                    <a href="#" id="gologin">Login</a>
-                </li>
 
-            </ul>
-        `;
-    document.getElementById('header').innerHTML = html;
-    document.getElementById('gologin').addEventListener("click",GOLOGINVIEW);
-}
-function GOLOGINVIEW(){
-    document.location="/Pages/LoginPage/LoginView.html";
-}
 function addNEWUSER(){
     if(document.getElementById("admRadio").checked){
         let proveedor = {

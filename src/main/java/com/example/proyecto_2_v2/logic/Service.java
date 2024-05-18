@@ -70,7 +70,7 @@ public class Service {
         Proveedores p=new Proveedores();
         p.setNombreP(nombreP);
         p.setIdP(idP);
-        p.setAprobado((byte) 0);//0=fals 1=true
+        p.setAprobado(false);//0=fals 1=true
         proveedorRepository.save(p);
     Usuarios u=new Usuarios();
     u.setUsern(usern);
@@ -96,10 +96,10 @@ public class Service {
         Usuarios u=null;
         if(existeU(username)==true) {
             u = usuarioRepository.findByUsern(username);
-            if (u.getProveedoresByIdprov().getAprobado().equals((byte) 0)) {
-                u.getProveedoresByIdprov().setAprobado((byte) 1);
+            if (u.getProveedoresByIdprov().getAprobado().equals(false)) {
+                u.getProveedoresByIdprov().setAprobado(true);
             } else {
-                u.getProveedoresByIdprov().setAprobado((byte) 0);//boole
+                u.getProveedoresByIdprov().setAprobado(false);//boole
             }
             usuarioRepository.save(u);
         }

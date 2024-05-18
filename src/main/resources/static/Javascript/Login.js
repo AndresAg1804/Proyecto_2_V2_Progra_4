@@ -3,7 +3,7 @@ var api_login=backend+'/login';//cual restcontroller
 
 var loginstate ={
     logged: false,
-    Usuarios : {usern:"", tipo:""}
+    Usuarios : {usern:"",pasw:null, tipo:"",proveedoresByIdprov:null}
 }
 
 async function checkuser(){
@@ -66,6 +66,7 @@ function setEVENTES(){
                 </li>
                 <li>
                     <a class="user" href="#">${loginstate.Usuarios.usern}</a>
+                    <a class="user" href="#">${loginstate.Usuarios.proveedoresByIdprov.idP}</a>
                 </li>
             </ul>
         `;
@@ -88,7 +89,16 @@ function login(){
     (async ()=>{
         const response = await fetch(request); //jsuto aqui, aqui se envia el request
         if (!response.ok) {errorMessage(response.status);return;}
-        document.location="/Pages/FacturarPage/FacturarView.html";
+        await checkuser();
+        if(loginstate.logged){
+            if(loginstate.Usuarios.tipo=="ADM"){
+                document.location="/Pages/ADM/ADMview.html";
+            }
+            else{
+                document.location="/Pages/FacturarPage/FacturarView.html";
+            }
+
+        }
     })();
 }
 

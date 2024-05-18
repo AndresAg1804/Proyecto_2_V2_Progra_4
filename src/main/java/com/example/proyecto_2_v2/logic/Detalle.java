@@ -23,7 +23,7 @@ public class Detalle {
     @JoinColumn(name = "numfact", referencedColumnName = "numfact")
     private Facturas facturasByNumFact;
     @ManyToOne
-    @JoinColumn(name = "idprod", referencedColumnName = "idPr")
+    @JoinColumn(name = "id_pr", referencedColumnName = "id_pr")
     private Producto productoByIdProd;
 
 

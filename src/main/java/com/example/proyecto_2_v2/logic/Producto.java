@@ -15,7 +15,7 @@ public class Producto {
     private String nombreP;
 
     @Id
-    @Column(name = "idPr")
+    @Column(name = "id_pr")
     private String idPr;
     @Basic
     @Column(name = "precio")

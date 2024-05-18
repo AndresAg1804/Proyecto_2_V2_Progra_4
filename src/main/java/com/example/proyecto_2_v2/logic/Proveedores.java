@@ -20,7 +20,7 @@ public class Proveedores {
     private String idP;
     @Basic
     @Column(name = "aprobado")
-    private Byte aprobado;
+    private Boolean aprobado;
     @OneToMany(mappedBy = "proveedoresByProveedorid")
     private Collection<Clientes> clientesByIdP;
     @OneToMany(mappedBy = "proveedoresByIdProveedor")
@@ -46,11 +46,11 @@ public class Proveedores {
         this.idP = idP;
     }
 
-    public Byte getAprobado() {
+    public Boolean getAprobado() {
         return aprobado;
     }
 
-    public void setAprobado(Byte aprobado) {
+    public void setAprobado(Boolean aprobado) {
         this.aprobado = aprobado;
     }
 

@@ -1,3 +1,4 @@
+var backend="http://localhost:8080/api";
 var apiPro=backend+'/productos';
 
 var statePro ={
@@ -13,24 +14,34 @@ document.addEventListener("visibilitychange",unloadedProductos);
 
 async function loadedProductos(event) {
     try {
+        await checkuser();
+        console.log(loginstate);
         await mainrender();
+        console.log("Se hizo mainRender");
     } catch (error) {
         return;
     }
 
     document.getElementById("buscarPro").addEventListener("click", searchProducto);
     document.getElementById("savePro").addEventListener("click", saveProducto);
+    console.log("Se hizo eventos click");
 
-
+/*
     state_jsonProductos = sessionStorage.getItem("productos");
     if(!state_jsonProductos){
+        console.log("Se hizo fetchAndList");
         fetchAndListProductos(); //hacer
     }
     else{
+        console.log("Entro en sessionStorage existente");
         statePro=JSON.parse(state_jsonProductos);
         document.getElementById("idPrp").value=statePro.item.idPr;
         render_listProductos(); //hacer
-    }
+
+        NO ESTA FUNCIONANDO EL SESSIONSTORAGE AQUI
+    }*/
+
+    fetchAndListProductos();
 }
 
 async function unloadedProductos(event){
@@ -40,10 +51,11 @@ async function unloadedProductos(event){
 }
 //aqui voy tengo que hacer el metodo en el RestController de productos
 function fetchAndListProductos(){ //metodo para obtener la lista actual de personas
-    const request = new Request(apiPro+`/read?id=${loginstate.Usuarios.usern}`, {method: 'GET', headers: { }});
+    const request = new Request(apiPro+`/read?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
+        console.log("Fetch Exitoso");
         statePro.list = await response.json();
         render_listProductos(); //una vez cargada la lista llama a la funcion de render_list
     })();
@@ -61,7 +73,7 @@ function render_list_itemProductos(listado,item) {
     //<a href="/set/editpro(idPr=${item.id},nombreP=${item.nombre},precio=${item.precio},cant=${item.cant})}"><img class="editimg" src="../../../static/Images/edit.png"></a>
     tr.innerHTML = `
                     <td>
-                        <a><img class="editimg" src="../../../static/Images/check.png"></a>
+                        <a><img class="editimg" src="/Images/check.png"></a>
                     </td>
                     <td>
                         <div>${item.idPr}</div>
@@ -76,7 +88,7 @@ function render_list_itemProductos(listado,item) {
                         <div>${item.cant}</div>
                     </td>
                     <td>
-                        <a><img class="editimg" src="../../../static/Images/edit.png"></a>
+                        <a><img class="editimg" src="/Images/edit.png"></a>
                     </td>`;//cambia y agrega el html necesario para 1 linea de la tabla
     //tr.querySelector("#edit").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
     //tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});
@@ -90,38 +102,53 @@ function empty_itemProducto(){
 
 function load_itemProducto(){
     statePro.item={ //solicita todos los campos y los iguala en item
+    //<label for="idPr">ID:</label>
+    //<input type="text" name="idPr" id="idPr">
         nombre:document.getElementById("nombreP").value,
+        idPr:document.getElementById("idPr").value,
         precio:document.getElementById("precio").value,
         cant:document.getElementById("cant").value
     };
+    console.log("loadProducto Exitoso1");
 }
 
 function validate_itemProducto(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
-
-    document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
-
+    console.log("validate item inicia");
+    //document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
+    console.log("validate item inicia2");
     //el #nombreP es para clase o id?
 
-    if (statePro.item.nombre.length==0){
-        document.querySelector("#nombreP").classList.add("invalid");
+    if (statePro.item.idPr.length==0){
+        //document.querySelector("#nombreP").classList.add("invalid");
         error=true;
+        console.log("validate item error1");
+    }
+
+    if (statePro.item.nombre.length==0){
+        //document.querySelector("#nombreP").classList.add("invalid");
+        error=true;
+        console.log("validate item error2");
     }
     if (statePro.item.precio==0){
-        document.querySelector("#precio").classList.add("invalid");
+       // document.querySelector("#precio").classList.add("invalid");
         error=true;
+        console.log("validate item error3");
     }
     if (statePro.item.cant==0){
-        document.querySelector("#cant").classList.add("invalid");
+       // document.querySelector("#cant").classList.add("invalid");
         error=true;
+        console.log("validate item error4");
     }
+    console.log("validate item retorna");
     return !error;
 }
 
 function saveProducto(){
     load_itemProducto();
+    console.log("loadProducto Exitoso2");
     if(!validate_itemProducto()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(api, {method: 'POST', //falta hacer el metodo en el RestController
+    let request = new Request(apiPro+`/add?usern=${loginstate.Usuarios.proveedoresByIdprov}`, {method: 'POST', //falta hacer el metodo en el RestController
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(statePro.item)}); //creo que a esto le van a hacer falta parametros... el idpro,idPr
     (async ()=>{
@@ -134,7 +161,7 @@ function saveProducto(){
 function searchProducto(){ //funcion para el search
     idBusqueda = document.getElementById("idPrp").value;
     statePro.item.idProd=idBusqueda;
-    const request = new Request(api+`/search?id=${idBusqueda}`, //falta hacer el metodo en el RestController
+    const request = new Request(apiPro+`/search?id=${idBusqueda}`, //falta hacer el metodo en el RestController
         {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);

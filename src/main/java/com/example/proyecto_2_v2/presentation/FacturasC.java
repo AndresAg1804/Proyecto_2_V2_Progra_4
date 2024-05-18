@@ -3,10 +3,7 @@ package com.example.proyecto_2_v2.presentation;
 import com.example.proyecto_2_v2.logic.Facturas;
 import com.example.proyecto_2_v2.logic.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,12 +14,24 @@ public class FacturasC {
     @Autowired
     Service service;
 
-   public Iterable<Facturas> findAllByProveedor(@PathVariable String idP){
+    @GetMapping("/findAll")
+   public Iterable<Facturas> findAllByProveedor(@RequestParam String idP){
        Iterable<Facturas> lista=  service.findFacturasByIdProveedor(idP);
+       for(Facturas factura: lista){
+           factura.setProveedoresByIdProveedor(null);
+            factura.setDetallesByNumFact(null);
+       }
+       return lista;
+   }
 
-
-       return lista; 
-
+    @GetMapping("/search")
+   public Iterable<Facturas> findbyProvAndNumF(@RequestParam String idP, @RequestParam String numFact){
+        Iterable<Facturas> lista = service.findAllByIdProveedorAndNumFact(idP, Integer.parseInt(numFact));
+       for(Facturas factura: lista){
+           factura.setProveedoresByIdProveedor(null);
+           factura.setDetallesByNumFact(null);
+       }
+       return lista;
    }
 
 }

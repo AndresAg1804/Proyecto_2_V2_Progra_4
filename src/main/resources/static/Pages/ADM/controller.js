@@ -36,7 +36,7 @@ function renderEACHone(listado,item){
 					<td>${item.proveedoresByIdprov.idP}</td>
 					<td>${item.proveedoresByIdprov.nombreP}</td>
 
-					<input type="button" id="AprovarDesAprovar" value="${item.proveedoresByIdprov.aprobado}">
+					<td><input type="button" id="AprovarDesAprovar" value="${item.proveedoresByIdprov.aprobado}"></td>
 					`;//0=fals 1=true
             tr.querySelector("#AprovarDesAprovar").addEventListener("click",async()=>{ await editApprove(item.usern);});
             listado.append(tr);

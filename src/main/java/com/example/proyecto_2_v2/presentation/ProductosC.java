@@ -38,14 +38,11 @@ public class ProductosC {
     * */
 
     @PostMapping("/add")
-    public void save(@RequestParam Proveedores usern,@RequestBody Producto producto) {
+    public void save(@RequestBody Producto producto) {
         //Proveedores prove = usuario.getProveedoresByIdprov();
         try {
-            System.out.println(usern);
+            //System.out.println(usern);
             System.out.println("Llego al add");
-
-
-            producto.setProveedoresByIdProd(usern);
 
 
 
@@ -54,9 +51,7 @@ public class ProductosC {
         }catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        /*
-        Proveedores prove =u.getProveedoresByIdprov();
-        producto.setProveedoresByIdProd(service.get_ProvedorBYID(u.getUsern()));*/
+
     }
 
 

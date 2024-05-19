@@ -1,9 +1,8 @@
-var backend="http://localhost:8080/api";
-var apiPro=backend+'/productos';
+var apiPro="http://localhost:8080/api/productos";
 
 var statePro ={
     list: new Array(), //esta es la lsta de personas que se carga
-    item : {nombre:"",idPr:"",precio:0.0,idProd:"",cant:0},
+    ProductosC : {nombreP:"",idPr:"",precio:0.0,cant:0,detallesByIdPr:null,proveedoresByIdProd:null},
     mode: "" // ADD, EDIT
 }
 
@@ -79,7 +78,7 @@ function render_list_itemProductos(listado,item) {
                         <div>${item.idPr}</div>
                     </td>
                     <td>
-                        <div>${item.nombre}</div>
+                        <div>${item.nombreP}</div>
                     </td>
                     <td>
                         <div>${item.precio}</div>
@@ -97,19 +96,24 @@ function render_list_itemProductos(listado,item) {
 }
 
 function empty_itemProducto(){
-    statePro.item={nombre:"",idPr:"",precio:0.0,idProd:"",cant:0};
+    statePro.ProductosC={nombreP:"",idPr:"",precio:0.0,cant:0,proveedoresByIdProd:null};
 }
 
 function load_itemProducto(){
-    statePro.item={ //solicita todos los campos y los iguala en item
+    statePro.ProductosC={ //solicita todos los campos y los iguala en item
     //<label for="idPr">ID:</label>
     //<input type="text" name="idPr" id="idPr">
-        nombre:document.getElementById("nombreP").value,
+        nombreP:document.getElementById("nombreP").value,
         idPr:document.getElementById("idPr").value,
         precio:document.getElementById("precio").value,
-        cant:document.getElementById("cant").value
+        cant:document.getElementById("cant").value,
+        detallesByIdPr:null,
+        proveedoresByIdProd:loginstate.Usuarios.proveedoresByIdprov
+
     };
-    console.log("loadProducto Exitoso1");
+
+
+console.log("loadProducto Exitoso1");
 }
 
 function validate_itemProducto(){ //funcion para verificar que todos los campos hayan sido rellenados
@@ -119,23 +123,23 @@ function validate_itemProducto(){ //funcion para verificar que todos los campos 
     console.log("validate item inicia2");
     //el #nombreP es para clase o id?
 
-    if (statePro.item.idPr.length==0){
+    if (statePro.ProductosC.idPr.length==0){
         //document.querySelector("#nombreP").classList.add("invalid");
         error=true;
         console.log("validate item error1");
     }
 
-    if (statePro.item.nombre.length==0){
+    if (statePro.ProductosC.nombreP.length==0){
         //document.querySelector("#nombreP").classList.add("invalid");
         error=true;
         console.log("validate item error2");
     }
-    if (statePro.item.precio==0){
+    if (statePro.ProductosC.precio==0){
        // document.querySelector("#precio").classList.add("invalid");
         error=true;
         console.log("validate item error3");
     }
-    if (statePro.item.cant==0){
+    if (statePro.ProductosC.cant==0){
        // document.querySelector("#cant").classList.add("invalid");
         error=true;
         console.log("validate item error4");
@@ -148,9 +152,9 @@ function saveProducto(){
     load_itemProducto();
     console.log("loadProducto Exitoso2");
     if(!validate_itemProducto()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiPro+`/add?usern=${loginstate.Usuarios.proveedoresByIdprov}`, {method: 'POST', //falta hacer el metodo en el RestController
+    let request = new Request(apiPro+'/add', {method: 'POST', //falta hacer el metodo en el RestController
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(statePro.item)}); //creo que a esto le van a hacer falta parametros... el idpro,idPr
+        body: JSON.stringify(statePro.ProductosC)}); //creo que a esto le van a hacer falta parametros... el idpro,idPr
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
@@ -160,7 +164,7 @@ function saveProducto(){
 
 function searchProducto(){ //funcion para el search
     idBusqueda = document.getElementById("idPrp").value;
-    statePro.item.idProd=idBusqueda;
+    statePro.ProductosC.idProd=idBusqueda;
     const request = new Request(apiPro+`/search?id=${idBusqueda}`, //falta hacer el metodo en el RestController
         {method: 'GET', headers: { }});
     (async ()=>{

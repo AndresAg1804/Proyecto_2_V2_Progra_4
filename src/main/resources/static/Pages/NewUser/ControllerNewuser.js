@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded",MAINRENDER);
-async function MAINRENDER(event) {
+document.addEventListener("DOMContentLoaded",MAINRENDERnewU);
+async function MAINRENDERnewU(event) {
     try{ await mainrender();} catch(error){return;}
     await newUser();
 }

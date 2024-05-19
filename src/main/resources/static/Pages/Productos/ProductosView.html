@@ -51,10 +51,7 @@
         <div class="forms" id="forms">
             <!--Aqui se guardara el form para hacer el guardado
                 y edicion de los productos-->
-            <form class="producto-forms">
-                <div>
-                    <h2>Editar</h2>
-                </div>
+            <div class="producto-forms">
                 <div class="form-group">
                     <!--
                      <th:block th:if="${proEDIT != null}">
@@ -67,6 +64,7 @@
                     -->
 
                 </div>
+                <lable id="editLABLE">Editar</lable>
                 <div class="form-group">
                     <label for="idPr">ID:</label>
                     <input type="text" name="idPr" id="idPr">
@@ -84,8 +82,8 @@
                     <label for="cant">Cantidad:</label>
                     <input type="number" name="cant" id="cant">
                 </div>
-                <button id="savePro" type="submit" >Crear Producto/Guardar Producto</button>
-            </form>
+                <input id="savePro" type="submit" value="Crear Producto/Guardar Producto">
+            </div>
         </div>
     </div>
 </div>

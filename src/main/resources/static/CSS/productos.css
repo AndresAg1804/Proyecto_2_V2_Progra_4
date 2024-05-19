@@ -92,7 +92,7 @@
     background-color: lightgray;
     border-radius: 10px;
     width: 25%;
-    height: 60%;
+    height: 30vh;
     margin: 0px;
     align-items: center;
     font-weight: bolder;
@@ -111,7 +111,7 @@
     justify-content: center;
     align-content: center;
     display: flex;
-    margin: 10px;
+    margin: 0px;
     padding: 0px;
     width: 70%;
     height: 50px;
@@ -131,29 +131,23 @@
     border: 1px solid gray;
     margin: 0px;
     padding: 0px;
-    width: 65%;
-    height: 80%;
+    width: 60%;
+    height: 60%;
     background-color: white;
 }
 
-form div:first-child{
-    margin-bottom: 10%;
-}
-
-.forms form {
-    margin: 10px;
-    padding-right: 10px;
-}
 
 
-form button {
+
+
+#savePro{
     background-color: rebeccapurple;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 300px;
+    width: 25vh;
     height: 10%;
     horiz-align: center;
 }
@@ -184,5 +178,14 @@ form button {
     cursor: pointer;
     horiz-align: center;
 }
-
 input.invalid {box-shadow: 0 0 2px 2px red;}
+
+#editLABLE{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-size: larger;
+}
+#idPr{
+    margin-top: 0px;
+    padding-top: 0px;
+}

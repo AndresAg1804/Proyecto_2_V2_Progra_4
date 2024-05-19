@@ -27,7 +27,7 @@ async function go_to_loginJS(){
     }
     mainrender();
 }
-function login(){
+ function login(){
     let Usuario={usern:document.getElementById("usern").value,
         pasw:document.getElementById("pasw").value
     };
@@ -45,17 +45,23 @@ function login(){
             if(loginstate.Usuarios.tipo=="ADM"){
                 document.location="/Pages/ADM/ADMview.html";
             }
-            else{
+            else if (loginstate.Usuarios.proveedoresByIdprov.aprobado==true){
                 document.location="/Pages/FacturarPage/FacturarView.html";
+            }
+            else if(loginstate.Usuarios.proveedoresByIdprov.aprobado==false){
+                    await logout();
             }
 
         }
     })();
+
 }
 
 function logout(event){
-    event.preventDefault();
-    // Melvin que es esto ??
+    if(event!=null) {
+        event.preventDefault();
+    }
+
     let request = new Request(api_login+'/logout', {method: 'POST'});
     (async ()=>{
         const response = await fetch(request);

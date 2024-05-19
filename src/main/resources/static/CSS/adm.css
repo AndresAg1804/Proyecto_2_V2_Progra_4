@@ -1,0 +1,61 @@
+.admall {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    height: 75vh;
+    margin: 0px;
+    padding: 0px;
+    padding-bottom: 17px;
+    flex-direction:column;
+}
+.ADMproductos {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 95%;
+    height: 70vh;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 0px;
+}
+.ADMex_para_overflow {
+    width: 70%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+    color: black;
+
+    margin-left: 10px;
+    margin-right: 100px;
+    padding-right: 24px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    height: 500px;
+    background-color: rebeccapurple;
+}
+.ADMproductos table {
+    border-collapse: collapse;
+    background-color: white;
+    color: black;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 100%;
+    border: 4px solid white;
+    height: 90%;
+}
+.ADMproductos th {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+}
+.ADMproductos td,input{
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}

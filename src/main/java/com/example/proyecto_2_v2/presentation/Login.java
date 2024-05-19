@@ -18,10 +18,9 @@ public class Login {
     @PostMapping("/login")
     public Usuarios login(@RequestBody Usuarios form, HttpServletRequest request) {
         try {
-            System.out.printf("Juan Pablo Cartin");
             request.login(form.getUsern(), form.getPasw());//pero no entiendo donde esta defindio este metod en relacion a el UserRepository ???
         } catch (ServletException e) {
-            System.out.println("Okay but why" );
+
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         Authentication auth = (Authentication) request.getUserPrincipal();

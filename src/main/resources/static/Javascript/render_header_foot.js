@@ -72,6 +72,7 @@ function renderheader(){
                     
                 </li>
                 <li>
+                <a href="#" id="gofacturas">Facturas</a>
                     <a href="#" id="goproductos">Productos</a>
                 </li>
             </ul>
@@ -79,6 +80,7 @@ function renderheader(){
         document.getElementById('header').innerHTML = html;
         document.getElementById('LogoutA').addEventListener('click', logout);
         document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
+        document.getElementById('gofacturas').addEventListener("click",GOFACTURAS);
 
     }
 }
@@ -95,4 +97,8 @@ function GOLOGINVIEW(){
 }
 function GOPRODUCTOS(){
     document.location="/Pages/Productos/ProductosView.html";
+}
+
+function GOFACTURAS(){
+    document.location="/Pages/FacturasPage/FacturasView.html";
 }

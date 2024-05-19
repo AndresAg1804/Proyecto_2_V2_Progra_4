@@ -6,22 +6,42 @@
     <script src="../../Javascript/render_header_foot.js"></script>
     <script src="ControllerFacturas.js"></script>
     <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
+    <script src="../../Javascript/Login.js"></script>
 </head>
 <body>
 <div id="header" class="header">
 </div>
 
+<div class="central" id="central">
+    <div class="facturas" id="facturas">
+        <div class="ex_para_overflow" id="ex_para_overflow">
+            <table>
+                <thead>
+                <tr>
+                    <form class="factura_buscar" name="factura_bucar">
+                        <div class="form-group-buscar">
+                            <label for="numFact">ID:</label>
+                            <input type="text" name="numFact" id="numFact" value="">
+                            <button id="buscarFactura" type="submit" >Buscar</button>
+                        </div>
+                    </form>
+                </tr>
+                <tr>
+                    <th> </th>
+                    <th>Num Factura</th>
+                    <th>Cliente</th>
+                    <th>Monto</th>
+                    <th>Fecha</th>
+                    <th> </th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody class="containerFacturas" id="containerFacturas">
 
-<div id="main">
-    <table>
-        <tr id="busqueda">
+                </tbody>
 
-        </tr>
-        <tr> <th>Num Factura</th><th>Cliente</th> <th>Proveedor</th> <th>Monto</th> <th> PDF/XML</th></tr>
-
-    </table>
-</div>
-
+            </table>
+        </div>
 
 
 

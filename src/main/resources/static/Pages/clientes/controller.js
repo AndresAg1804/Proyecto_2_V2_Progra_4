@@ -1,196 +1,161 @@
-var api = backend + '/clientes';
+var backend="http://localhost:8080/api";
+var apiC = backend + '/clientes';
 
-var state = {
+var stateC = {
     list: new Array(),
-    item: { nombreC: "", idC: "", correo: "", telefono: ""},
+    item: { nombreC: "", idC: "", correo: "", telefono: 0},
     mode: "" // ADD, EDIT
 }
 
-document.addEventListener("DOMContentLoaded",loaded);
-document.addEventListener("visibilitychange",unloaded);
+document.addEventListener("DOMContentLoaded",loadedClientes);
+document.addEventListener("visibilitychange",unloadedClientes);
 
-async function loaded(event){
-    try{ await menu();} catch(error){return;} //esto renderiza el header
+async function loadedClientes(event){
+    try {
+        await checkuser();
+        console.log(loginstate);
+        await mainrender();
+        console.log("Se hizo mainRender");
+    } catch (error) {
+        return;
+    }
 
-    document.getElementById("search").addEventListener("click",search); //boton de search en html
-    document.getElementById("new").addEventListener("click",ask); //boton para abrir el menu de creacion de persona
+    document.getElementById("buscarCli").addEventListener("click",searchClientes); //boton de search en html
+    document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
 
-    document.getElementById("itemoverlay").addEventListener("click",toggle_itemview);
 
-    document.querySelector("#itemview #registrar").addEventListener("click",add);
-    document.querySelector("#itemview #actualizar").addEventListener("click",update);
-    document.querySelector("#itemview #cancelar").addEventListener("click",toggle_itemview);
-
-    state_json=sessionStorage.getItem("personas");
+   state_json=sessionStorage.getItem("personas");
     if(!state_json){
-        fetchAndList();
+        fetchAndListClientes();
     }
     else{
-        state=JSON.parse(state_json);
-        document.getElementById("nombreBusqueda").value=state.item.nombre;
-        render_list();
+        stateC=JSON.parse(state_json);
+        document.getElementById("nombreBusquedaC").value=stateC.item.nombreC;
+        render_listClientes();
     }
 
-    //fetchAndList();
+    fetchAndListClientes();
 }
 
-async function unloaded(event){
+async function unloadedClientes(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
-        sessionStorage.setItem("personas",JSON.stringify(state));
+        sessionStorage.setItem("clientes",JSON.stringify(stateC));
     }
 }
 
-function fetchAndList(){ //metodo para obtener la lista actual de personas
-    const request = new Request(api, {method: 'GET', headers: { }});
+function fetchAndListClientes(){ //metodo para obtener la lista actual de personas
+    const request = new Request(apiC+`/read?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        state.list = await response.json(); /*
-         @GetMapping
-         public List<Persona> read() {
-        return personaRepository.findAll(); retorna la lista del repository
-    }*/
-        render_list(); //una vez cargada la lista llama a la funcion de render_list
+        stateC.list = await response.json();
+        render_listClientes(); //una vez cargada la lista llama a la funcion de render_list
     })();
 }
 
-function render_list(){
-    var listado=document.getElementById("list"); //agarra la lista del dom
+function render_listClientes(){
+    var listado=document.getElementById("listaClientes"); //agarra la lista del dom
     listado.innerHTML=""; //limpia el html para volver a cargar la lista
-    state.list.forEach( item=>render_list_item(listado,item)); //foreach de cada elemento en la lista
+    stateC.list.forEach( item=>render_list_itemClientes(listado,item)); //foreach de cada elemento en la lista
 }
 
-function render_list_item(listado,item){
+function render_list_itemClientes(listado,item){
     var tr =document.createElement("tr"); //crea un elemento tr nuevo para cada iteracion del foreach
-    tr.innerHTML=`<td>${item.cedula}</td>
-					<td>${item.nombre}</td>
-					<td><img src='/images/${item.sexo}.png' class='icon' ></td>
-					<td id='edit'><img src='/images/edit.png'></td>
-                    <td id='delete'><img src='/images/delete.png'></td>
-                    <td id='pdf'><a href='/api/personas/${item.cedula}/pdf' target = "_blank"><img src='/images/pdf.png' style="width: 15px"></a></td>` ; //cambia y agrega el html necesario para 1 linea de la tabla
-    tr.querySelector("#edit").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
-    tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});
+    tr.innerHTML=`
+                    <td>
+                        <a><img class="editimg" src="/Images/check.png"></a>
+                    </td>
+                    <td>
+                        <div>${item.idPr}</div>
+                    </td>
+                    <td>
+                        <div>${item.nombre}</div>
+                    </td>
+                    <td>
+                        <div>${item.precio}</div>
+                    </td>
+                    <td>
+                        <div>${item.cant}</div>
+                    </td>
+                    <td>
+                        <a><img class="editimg" src="/Images/edit.png"></a>
+                    </td>`;
+    tr.querySelector(".editimg").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
+    /*tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});*/
     listado.append(tr);//es como hacer un push con html?
 }
 
-function search(){ //funcion para el search
-    nombreBusqueda = document.getElementById("nombreBusqueda").value; //agarra el valor del elemento del html
-    state.item.nombre=nombreBusqueda;
-    const request = new Request(api+`/search?nombre=${nombreBusqueda}`, //lo manda al RestController Personas
+function searchClientes(){ //funcion para el search
+    nombreBusquedaC = document.getElementById("nombreBusquedaC").value; //agarra el valor del elemento del html
+    stateC.item.nombreC=nombreBusquedaC;
+    const request = new Request(apiC+`/search?nombre=${nombreBusquedaC}`, //lo manda al RestController Personas
         {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        state.list = await response.json();
-        render_list(); //renderiza la lista nuevamente con la info que recolecto
+        stateC.list = await response.json();
+        render_listClientes(); //renderiza la lista nuevamente con la info que recolecto
     })();
 }
-/*
-* @GetMapping("/search")
-    public List<Persona> findByNombre(@RequestParam String nombre) {
-        return personaRepository.findByNombre(nombre);
-    }
-    *
-    *
-    *
 
- */
-
-function ask(){
-    empty_item(); //vacia todos los campos del objeto item
-    toggle_itemview();//esto es para el pop up, se activa
-    state.mode="ADD"; //entramos en modo add
-    render_item();//renderiza el pop up
+function empty_itemCliente(){
+    stateC.item={cedula:"", nombre:"",sexo:""};
 }
 
-function toggle_itemview(){
-    document.getElementById("itemoverlay").classList.toggle("active"); //alterna -> si no tiene el active lo agrega, si ya lo tiene lo quita
-    document.getElementById("itemview").classList.toggle("active");
-}
-
-function empty_item(){
-    state.item={cedula:"", nombre:"",sexo:""};
-}
-
-function render_item(){
+function render_itemClientes(){
     document.querySelectorAll('#itemview input').forEach( (i)=> {i.classList.remove("invalid");});
-    document.getElementById("cedula").value = state.item.cedula;//iguala lo que se haya puesto en los campos en el html y lo iguala a lo que hay en la variable item
-    document.getElementById("nombre").value = state.item.nombre;
-    if ( (['M','F'].includes(state.item.sexo))){ //verfica que el campo de sexo y la iguala del item
-        document.querySelector("input[name='sexo'][value='"+state.item.sexo+"']").checked=true;
-    }
-    else{
-        document.querySelectorAll("input[name='sexo']").forEach( (r)=>{r.checked=false;});
-    }
-    if(state.mode=="ADD"){ //verifica que el modo sea add
-        document.querySelector("#itemview #registrar").hidden=false;
-    }
-    else{
-        document.querySelector("#itemview #registrar").hidden=true;
-    }
-    if(state.mode=="EDIT"){ //verifica que el modo sea add
-        document.querySelector("#itemview #actualizar").hidden=false;
-    }
-    else{
-        document.querySelector("#itemview #actualizar").hidden=true;
-    }
-
+    document.getElementById("nombreC").value = stateC.item.nombreC;
+    document.getElementById("idC").value = stateC.item.idC;
+    document.getElementById("correo").value = stateC.item.correo;
+    document.getElementById("telefono").value = stateC.item.telefono;
 }
 
 function add(){
-    load_item();
-    if(!validate_item()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(api, {method: 'POST',
+    load_itemCliente();
+    if(!validate_itemCliente()) return;//verifica que todos los campos hayan sido seleccionados
+    let request = new Request(apiC, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(state.item)});
+        body: JSON.stringify(stateC.item)});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        toggle_itemview();//llama de nuevo al pop up para quitar el active
-        fetchAndList();//actualiza la lista
+        fetchAndListClientes();//actualiza la lista
     })();
 }
 
-/*
-* @PostMapping()
-    public void create(@RequestBody Persona persona) {
-        try {
-            personaRepository.save(persona);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-    }
-* */
-
-function load_item(){
-    state.item={ //solicita todos los campos y los iguala en item
-        cedula:document.getElementById("cedula").value,
-        nombre:document.getElementById("nombre").value,
-        sexo:(document.querySelector("input[name='sexo']:checked"))?
-            document.querySelector("input[name='sexo']:checked").value : ""
+function load_itemCliente(){
+    stateC.item={ //solicita todos los campos y los iguala en item
+        nombreC:document.getElementById("nombreC").value,
+        idC:document.getElementById("idC").value,
+        correo:document.getElementById("correo").value,
+        telefono:document.getElementById("telefono").value
     };
 }
 
-function validate_item(){ //funcion para verificar que todos los campos hayan sido rellenados
+function validate_itemCliente(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
 
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
 
-    if (state.item.cedula.length==0){
+    if (stateC.item.nombreC.length==0){
         document.querySelector("#cedula").classList.add("invalid");
         error=true;
     }
 
-    if (state.item.nombre.length==0){
+    if (stateC.item.idC.length==0){
         document.querySelector("#nombre").classList.add("invalid");
         error=true;
     }
 
-    if ( !(['M','F'].includes(state.item.sexo))){
-        document.querySelectorAll("input[name='sexo']").forEach(e=>e.classList.add("invalid"));
+    if (stateC.item.correo.length==0){
+        document.querySelector("#correo").classList.add("invalid");
         error=true;
     }
 
+    if (stateC.item.telefono==0){
+        document.querySelector("#telefono").classList.add("invalid");
+        error=true;
+    }
     return !error;
 }
 
@@ -201,62 +166,33 @@ function edit(id){ //este llama a la funcion de read para encontrar a una person
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        state.item = await response.json();
-        toggle_itemview();
-        state.mode="EDIT";
-        render_item();
-        fetchAndList();
+        stateC.item = await response.json();
+        stateC.mode="EDIT";
+        render_itemClientes();
+        fetchAndListClientes();
     })();
 }
-/*
-function add(){
-    load_item();
-    if(!validate_item()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(api, {method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(state.item)});
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        toggle_itemview();//llama de nuevo al pop up para quitar el active
-        fetchAndList();//actualiza la lista
-    })();
-}
-* */
 function update() {
-    load_item();
-
-    if (!validate_item()) return; // verifica que todos los campos hayan sido seleccionados
-    let request = new Request(api +`/update/${state.item.cedula}`, {
+    load_itemCliente();
+    if (!validate_itemCliente()) return; // verifica que todos los campos hayan sido seleccionados
+    let request = new Request(apiC +`/update/${stateC.item.idC}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(state.item)
+        body: JSON.stringify(stateC.item)
     });
     (async () => {
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        toggle_itemview();//llama de nuevo al pop up para quitar el active
-        fetchAndList();//actualiza la lista
+        fetchAndListClientes();//actualiza la lista
     })();
 }
 
-function remove(id){
-    let request = new Request(backend+`/personas/${id}`,
-        {method: 'DELETE', headers: {}});
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
-        fetchAndList();
-    })();
+function saveCliente(){
+    if(stateC.mode=="ADD"){
+        add();
+    }
+    if(stateC.mode=="EDIT"){
+        update();
+        empty_itemCliente();
+    }
 }
-
-/*
-* @DeleteMapping("/{cedula}")
-  public void delete(@PathVariable String cedula) {
-      try {
-          personaRepository.delete(cedula);
-      } catch (Exception ex) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-      }
-  }
-* */

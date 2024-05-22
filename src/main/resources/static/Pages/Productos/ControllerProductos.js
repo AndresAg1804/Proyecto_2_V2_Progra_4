@@ -54,7 +54,6 @@ function fetchAndListProductos(){ //metodo para obtener la lista actual de perso
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        console.log("Fetch Exitoso");
         statePro.list = await response.json();
         render_listProductos(); //una vez cargada la lista llama a la funcion de render_list
     })();
@@ -67,9 +66,7 @@ function render_listProductos(){
 }
 
 function render_list_itemProductos(listado,item) {
-    var tr = document.createElement("tr"); //crea un elemento tr nuevo para cada iteracion del foreach
-    //<a href="/presentation/Facturar/AddProduct(idP=${item.id})}"><img class="editimg" src="../../../static/Images/check.png"></a>
-    //<a href="/set/editpro(idPr=${item.id},nombreP=${item.nombre},precio=${item.precio},cant=${item.cant})}"><img class="editimg" src="../../../static/Images/edit.png"></a>
+    var tr = document.createElement("tr");
     tr.innerHTML = `
                     <td>
                         <a><img class="editimg" src="/Images/check.png"></a>
@@ -88,13 +85,10 @@ function render_list_itemProductos(listado,item) {
                     </td>
                     <td>
                         <a id="productoEdit"><img class="editimg" src="/Images/edit.png"></a>
-                    </td>`;//cambia y agrega el html necesario para 1 linea de la tabla
-    //tr.querySelector("#edit").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
-    //tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});
-    //tr.querySelector("#xml").addEventListener("click",()=>{render_xml(item.cedula,item.nombre,item.sexo)});
+                    </td>`;
     tr.querySelector("#productoEdit").addEventListener("click",()=>{load_itemProductoEdit(item.idPr,item.nombreP,item.precio,item.cant)});
 
-    listado.append(tr);//es como hacer un push con html?
+    listado.append(tr);
 }
 
 function empty_itemProducto(){

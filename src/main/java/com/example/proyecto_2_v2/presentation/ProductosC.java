@@ -24,27 +24,14 @@ public class ProductosC {
     public Iterable<Producto> read(@AuthenticationPrincipal UserDetailsIMP user) {
         return service.get_all_productos_de_IDprovedor(user.getidP());
     }
-    /*
-    * function saveProducto(){
-    load_itemProducto();
-    if(!validate_itemProducto()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(api+`/add?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'POST', //falta hacer el metodo en el RestController
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(statePro.item)}); //creo que a esto le van a hacer falta parametros... el idpro,idPr
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        fetchAndListProductos();//actualiza la lista
-    })();
-}
-    * */
+
 
     @PostMapping("/add")
     public void save(@RequestBody Producto producto,@AuthenticationPrincipal UserDetailsIMP user) {
         try {
             Proveedores pro = service.get_ProvedorBYID(user.getidP());
             Producto search = service.findProdByIdAndProveedor(producto.getIdPr(), pro);
-            if(search!=null){//caso en que el search encuentra algo
+            if(search!=null){
                 service.updateProducto(producto.getNombreP(),producto.getPrecio(),producto.getCant(),producto.getIdPr());
             }
             else {

@@ -2,9 +2,10 @@ var apiFacturas="http://localhost:8080/api/facturas";
 
 var stateFac = {
     list:  new Array(),
-    factura: { numFact: 0, total: 0, detallesByNumFact:null,clientesByIdCliente: null,proveedoresByIdProveedor:null, fecha:""},
+    factura: { numFact: 0, total: 0, detallesByNumFact:"",clientesByIdCliente: "",proveedoresByIdProveedor:"", fecha:""},
     facturaDetalles: new Array(),
-    mode: "" // ADD, EDIT
+    mode: "" ,// ADD, EDIT
+    contenido:""
 }
 
 
@@ -28,9 +29,9 @@ async function loadedFact(event) {
 }
 
 async function unloadedFact(event){
-    if(document.visibilityState==="hidden" && loginstate.logged){
-        sessionStorage.setItem("facturas",JSON.stringify(stateFac));
-    }
+    // if(document.visibilityState==="hidden" && loginstate.logged){
+    //     sessionStorage.setItem("facturas",JSON.stringify(stateFac));
+    // }
 }
 
 function fetchAndListFact(){
@@ -96,22 +97,22 @@ function searchFacturas(){
 
 
 
-function xmlMaking(numFact){
+async function xmlMaking(numFact){
     const request = new Request(apiFacturas + `/facturaXML?numFact=${numFact}`, {method: 'GET', headers: { }});
-    (async ()=>{
+    await (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         stateFac.factura = await response.json();
 
     })();
     const request2 = new Request(apiFacturas + `/detallesXML?numFact=${numFact}`, {method: 'GET', headers: { }});
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
-        stateFac.facturaDetalles = await response.json();
+    await (async ()=>{
+        const response2 = await fetch(request2);
+        if (!response2.ok) {errorMessage(response2.status);return;}
+        stateFac.facturaDetalles = await response2.json();
     })();
 
-    contenido=`<?xml version="1.0" encoding="UTF-8"?>
+    stateFac.contenido=`<?xml version="1.0" encoding="UTF-8"?>
         <FacturacionElectronica>
         <Clave>456654546423131354898754132165849843516548413621879887131847</Clave>
         <CodigoActividad>123488112</CodigoActividad>
@@ -133,25 +134,34 @@ function xmlMaking(numFact){
             </Identificacion>
         </Receptor>
     `;
-    stateFac.facturaDetalles.forEach( item=>{
-        contenido+=`
+
+     stateFac.facturaDetalles.forEach( item=>render_XML(item));
+
+
+    stateFac.contenido=stateFac.contenido+`
+    <ResumenFactura>
+        <NumeroFactura>${stateFac.factura.numFact}</NumeroFactura>
+        <MontoTotal>${stateFac.factura.total}</MontoTotal>
+    </ResumenFactura>`;
+
+    stateFac.contenido=stateFac.contenido+`</FacturacionElectronica>`;
+
+    var blob = new Blob([stateFac.contenido],{type:'text/xml'});
+    window.open(URL.createObjectURL(blob));
+}
+function render_XML(item){
+    stateFac.contenido=stateFac.contenido+`
         <DetallesServicio>
             <detalle>
-                <codigoProducto></codigoProducto>
-                <nombre></nombre>
-                <precio></precio>
-                <cantidad></cantidad>
-                <montoFinal></montoFinal>
+                <codigoProducto>${item.productoByIdProd.idPr}</codigoProducto>
+                <nombre>${item.productoByIdProd.nombreP}</nombre>
+                <precio>${item.productoByIdProd.precio}</precio>
+                <cantidad>${item.productoByIdProd.cant}</cantidad>
+                <montoFinal>${item.monto}</montoFinal>
             </detalle>
         
         </DetallesServicio>
         `;
-        }
-
-    );
-
-    var blob = new Blob([contenido],{type:'text/xml'});
-    window.open(URL.createObjectURL(blob));
 }
 
 /* cierre: </FacturacionElectronica>

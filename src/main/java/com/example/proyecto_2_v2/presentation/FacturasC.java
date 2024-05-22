@@ -42,6 +42,16 @@ public class FacturasC {
        return lista;
    }
 
+   @GetMapping("/facturaXML")
+   public Facturas facturaXML(@RequestParam int numFact){
+        return service.get_FacturaXid(numFact);
+   }
+
+    @GetMapping("/detallesXML")
+    public Iterable<Detalle> detallesXML(@RequestParam int numFact){
+        return service.get_FacturaXid(numFact).getDetallesByNumFact();
+    }
+
     @GetMapping("/{numFact}/pdf")
     public void pdf(@PathVariable int numFact, HttpServletResponse response) {
         try {

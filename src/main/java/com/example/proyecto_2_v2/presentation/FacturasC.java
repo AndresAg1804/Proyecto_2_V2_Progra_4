@@ -49,7 +49,7 @@ public class FacturasC {
 
     @GetMapping("/detallesXML")
     public Iterable<Detalle> detallesXML(@RequestParam int numFact){
-        return service.get_FacturaXid(numFact).getDetallesByNumFact();
+        return service.findDetallesByFacturaNumFact(numFact);
     }
 
     @GetMapping("/{numFact}/pdf")

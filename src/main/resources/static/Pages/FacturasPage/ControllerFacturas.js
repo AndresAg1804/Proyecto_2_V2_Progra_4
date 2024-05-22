@@ -1,23 +1,21 @@
-var backend="http://localhost:8080/api";
-var apiFacturas=backend+'/facturas';
+var apiFacturas="http://localhost:8080/api/facturas";
 
 var stateFac = {
     list:  new Array(),
-    factura: { numfact: 0, total: 0, clientesByIdCliente: null, fecha:""},
+    factura: { numFact: 0, total: 0, detallesByNumFact:null,clientesByIdCliente: null,proveedoresByIdProveedor:null, fecha:""},
     mode: "" // ADD, EDIT
 }
+
 
 
 document.addEventListener("DOMContentLoaded",loadedFact);
 document.addEventListener("visibilitychange",unloadedFact);
 
 async function loadedFact(event) {
-    console.log("Llamo a load");
     try {
         await checkuser();
-        console.log(loginstate);
+
         await mainrender();
-        console.log("Se hizo mainRender");
     } catch (error) {
         return;
     }
@@ -35,14 +33,11 @@ async function unloadedFact(event){
 }
 
 function fetchAndListFact(){
-    console.log("Llamo a fetch");
-    const request = new Request(apiFacturas+`/findAll?idP=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
-    console.log(loginstate.Usuarios.proveedoresByIdprov.idP);
+
+    const request = new Request(apiFacturas+`/findAll`, {method: 'GET', headers: { }});
     (async ()=>{
-        console.log("Llamo a fetch");
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        console.log("Fetch Exitoso");
         stateFac.list = await response.json();
         render_listFacturas();
     })();
@@ -52,14 +47,14 @@ function fetchAndListFact(){
 function render_listFacturas(){
     var listado=document.getElementById("containerFacturas");
     listado.innerHTML="";
-    statePro.list.forEach( item=>render_list_itemFact(listado,item));
+    stateFac.list.forEach( item=>render_list_itemFact(listado,item));
 }
 
 function render_list_itemFact(listado,item) {
     let tr = document.createElement("tr");
     tr.innerHTML = `
                     <td>
-                        <div>${item.numfact}</div>
+                        <div>${item.numFact}</div>
                     </td>
                     <td>
                         <div>${item.clientesByIdCliente.nombreC}</div>
@@ -71,18 +66,15 @@ function render_list_itemFact(listado,item) {
                         <div>${item.fecha}</div>
                     </td>
                     <td>
-                        <a><img src="/Images/pdf.png">/a>
+                        <a id="pdfMaker" href='/api/facturas/${item.numFact}/pdf' target = "_blank"><img src="/Images/pdf.png" style="width: 15px"></a>
                     </td>
                     <td>
-                        <a><img src="/Images/XML.png"></a>
+                        <a id="xmlMaker"><img src="/Images/XML.png" style="width: 15px"></a>
                     </td>`;
-    tr.querySelector("#pdfMaker").addEventListener("click", ()=>{pdfMaking()});
-    tr.querySelector("#xmlMaker").addEventListener("click", ()=>{xmlMaking()});
+    tr.querySelector("#xmlMaker").addEventListener("click", ()=>{xmlMaking(item.numFact)});
 
-    //tr.querySelector("#edit").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
-    //tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});
-    //tr.querySelector("#xml").addEventListener("click",()=>{render_xml(item.cedula,item.nombre,item.sexo)});
-    listado.append(tr);//es como hacer un push con html?
+
+    listado.append(tr);
 }
 
 
@@ -102,8 +94,29 @@ function searchFacturas(){
 
 
 
-function pdfMaking(){}
-function xmlMaking(){}
+
+function xmlMaking(numFact){
+
+}
+
+/*
+* function render_xml(cedula,nombre,sexo){
+
+    contenido=`<?xml version="1.0" encoding="UTF-8"?>
+        <Persona>
+            <cedula>${cedula}</cedula>
+            <nombre>${nombre}</nombre>
+            <sexo>${sexo}</sexo>
+        </Persona>
+    `;
+
+    //document.getElementById("xmlframe").src="data:text/xml,"+contenido;
+    //toggle_xmlview();//hacer esta funcion
+
+    var blob = new Blob([contenido],{type:'text/xml'});
+    window.open(URL.createObjectURL(blob));
+}
+*/
 
 
 

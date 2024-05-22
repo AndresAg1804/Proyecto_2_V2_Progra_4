@@ -27,29 +27,29 @@ public class Proyecto2V2Application {
 
 	@Bean("securityFilterChain")
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//		var chain = http
-//				.authorizeHttpRequests(customizer -> customizer
-//						.anyRequest().permitAll()
-//				)
-//				.exceptionHandling(customizer -> customizer
-//						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-//				)
-//				.csrf().disable()
-//				.build();
-//		return chain;
 		var chain = http
 				.authorizeHttpRequests(customizer -> customizer
-						.requestMatchers("/api/login/login").permitAll()
-						.requestMatchers("/api/login/logout").authenticated()
-						.requestMatchers(HttpMethod.POST,"/api/**").hasAnyAuthority("ADM","PRO")
-						.requestMatchers("/api/**").hasAnyAuthority("ADM","PRO")//cuando no hay nada de verbo son todos
-						.requestMatchers("/**").permitAll()
+						.anyRequest().permitAll()
 				)
 				.exceptionHandling(customizer -> customizer
-						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+				)
 				.csrf().disable()
 				.build();
 		return chain;
+//		var chain = http
+//				.authorizeHttpRequests(customizer -> customizer
+//						.requestMatchers("/api/login/login").permitAll()
+//						.requestMatchers("/api/login/logout").authenticated()
+//						.requestMatchers(HttpMethod.POST,"/api/**").hasAnyAuthority("ADM","PRO")
+//						.requestMatchers("/api/**").hasAnyAuthority("ADM","PRO")//cuando no hay nada de verbo son todos
+//						.requestMatchers("/**").permitAll()
+//				)
+//				.exceptionHandling(customizer -> customizer
+//						.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+//				.csrf().disable()
+//				.build();
+//		return chain;
 	}
 
 }

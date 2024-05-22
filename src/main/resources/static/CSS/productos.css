@@ -1,4 +1,4 @@
-/*--------------------------------------------------------*/
+/--------------------------------------------------------/
 .all {
     display: flex;
     align-items: center;
@@ -178,8 +178,6 @@
     cursor: pointer;
     horiz-align: center;
 }
-input.invalid {box-shadow: 0 0 2px 2px red;}
-
 #editLABLE{
     margin-bottom: 10px;
     padding-bottom: 10px;

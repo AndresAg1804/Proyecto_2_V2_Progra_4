@@ -3,7 +3,7 @@ var apiC = backend + '/clientes';
 
 var stateC = {
     list: new Array(),
-    item: { nombreC: "", idC: "", correo: "", telefono: 0},
+    item: { nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null},
     mode: "" // ADD, EDIT
 }
 
@@ -24,7 +24,7 @@ async function loadedClientes(event){
     document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
 
 
-   state_json=sessionStorage.getItem("personas");
+   state_json=sessionStorage.getItem("clientes");
     if(!state_json){
         fetchAndListClientes();
     }
@@ -44,7 +44,7 @@ async function unloadedClientes(event){
 }
 
 function fetchAndListClientes(){ //metodo para obtener la lista actual de personas
-    const request = new Request(apiC+`/read?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
+    const request = new Request(apiC+`/read`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
@@ -54,7 +54,7 @@ function fetchAndListClientes(){ //metodo para obtener la lista actual de person
 }
 
 function render_listClientes(){
-    var listado=document.getElementById("listaClientes"); //agarra la lista del dom
+    var listado=document.getElementById("containerClientes"); //agarra la lista del dom
     listado.innerHTML=""; //limpia el html para volver a cargar la lista
     stateC.list.forEach( item=>render_list_itemClientes(listado,item)); //foreach de cada elemento en la lista
 }
@@ -66,21 +66,21 @@ function render_list_itemClientes(listado,item){
                         <a><img class="editimg" src="/Images/check.png"></a>
                     </td>
                     <td>
-                        <div>${item.idPr}</div>
+                        <div>${item.nombreC}</div>
                     </td>
                     <td>
-                        <div>${item.nombre}</div>
+                        <div>${item.idC}</div>
                     </td>
                     <td>
-                        <div>${item.precio}</div>
+                        <div>${item.correo}</div>
                     </td>
                     <td>
-                        <div>${item.cant}</div>
+                        <div>${item.telefono}</div>
                     </td>
                     <td>
-                        <a><img class="editimg" src="/Images/edit.png"></a>
+                        <a id="clienteEdit"><img class="editimg" src="/Images/edit.png"></a>
                     </td>`;
-    tr.querySelector(".editimg").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
+    tr.querySelector("#clienteEdit").addEventListener("click",()=>{load_itemClienteEdit(item.nombreC,item.idC,item.correo,item.telefono)});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
     /*tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});*/
     listado.append(tr);//es como hacer un push con html?
 }
@@ -99,7 +99,7 @@ function searchClientes(){ //funcion para el search
 }
 
 function empty_itemCliente(){
-    stateC.item={cedula:"", nombre:"",sexo:""};
+    stateC.item={cedulaC:"", nombreC:"", correo:"", telefono: 0};
 }
 
 function render_itemClientes(){
@@ -113,7 +113,7 @@ function render_itemClientes(){
 function add(){
     load_itemCliente();
     if(!validate_itemCliente()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiC, {method: 'POST',
+    let request = new Request(apiC+`/add`, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(stateC.item)});
     (async ()=>{
@@ -132,27 +132,34 @@ function load_itemCliente(){
     };
 }
 
+function load_itemClienteEdit(nombreC,idC,correo,telefono){
+    document.getElementById("nombreC").value = nombreC;
+    document.getElementById("idC").value = idC;
+    document.getElementById("correo").value = correo;
+    document.getElementById("telefono").value = telefono;
+}
+
 function validate_itemCliente(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
 
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
 
-    if (stateC.item.nombreC.length==0){
+    if (stateC.item.nombreC.length===0){
         document.querySelector("#cedula").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.idC.length==0){
+    if (stateC.item.idC.length===0){
         document.querySelector("#nombre").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.correo.length==0){
+    if (stateC.item.correo.length===0){
         document.querySelector("#correo").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.telefono==0){
+    if (stateC.item.telefono===0){
         document.querySelector("#telefono").classList.add("invalid");
         error=true;
     }
@@ -188,11 +195,15 @@ function update() {
 }
 
 function saveCliente(){
-    if(stateC.mode=="ADD"){
-        add();
-    }
-    if(stateC.mode=="EDIT"){
-        update();
-        empty_itemCliente();
-    }
+    load_itemCliente();
+
+    if(!validate_itemCliente()) return;
+    let request = new Request(apiC+`/add`, {method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(stateC.item)});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
+        fetchAndListClientes();//actualiza la lista
+    })();
 }

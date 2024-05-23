@@ -10,38 +10,38 @@
 
     <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
     <link rel="stylesheet" href="../../CSS/Menu.css">
-    <link rel="stylesheet" href="../../CSS/productos.css">
+    <link rel="stylesheet" href="../../CSS/clientes.css">
 
 </head>
 <body>
 <div id="header" class="header"></div>
 <!--Listo el html de productos, basicamente es todo a lo que se le va a agregar info mediante js, tablas/forms/inputs-->
 <div class="all" id="all">
-    <div class="productos" id="productos">
+    <div class="clientes" id="clientes">
         <div class="ex_para_overflow" id="ex_para_overflow">
             <!--Aqui se guardara la tabla donde se mostraran los productos
                 y el form para hacer la busqueda-->
             <table>
                 <thead>
                 <tr>
-                    <form class="producto-buscar" name="producto-buscar">
+
                         <div class="form-group-buscar">
-                            <label for="idPrp">ID:</label>
-                            <input type="text" name="idPr" id="idPrp" value="">
+                            <label for="idCr">ID:</label>
+                            <input type="text" name="idCr" id="idCr" value="">
                             <button id="buscarCli" type="submit" >Buscar</button>
                         </div>
-                    </form>
+
                 </tr>
                 <tr>
                     <th> </th>
-                    <th>ProductosID</th>
                     <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Cant</th>
+                    <th>ID</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
                     <th> </th>
                 </tr>
                 </thead>
-                <tbody class="containerProductos" id="containerProductos">
+                <tbody class="containerClientes" id="containerClientes">
                 <!--Aqui es donde se va la lista del state-->
                 </tbody>
 
@@ -50,7 +50,7 @@
         <div class="forms" id="forms">
             <!--Aqui se guardara el form para hacer el guardado
                 y edicion de los productos-->
-            <div class="producto-forms">
+            <div class="cliente-forms">
                 <div class="form-group">
                     <!--
                      <th:block th:if="${proEDIT != null}">
@@ -63,23 +63,22 @@
                     -->
 
                 </div>
-                <label id="editLABLE">Editar</label>
+                <label id="editLABEL">Editar</label>
                 <div class="form-group">
-                    <label for="idPr">ID:</label>
-                    <input type="text" name="idPr" id="idPr">
+                    <label for="nombreC">Nombre: </label>
+                    <input type="text" name="nombreC" id="nombreC">
                 </div>
                 <div class="form-group">
-
-                    <label for="nombreP">Nombre:</label>
-                    <input type="text" name="nombreP" id="nombreP">
+                    <label for="idC">ID: </label>
+                    <input type="text" name="idC" id="idC">
                 </div>
                 <div class="form-group">
-                    <label for="precio">Precio:</label>
-                    <input type="number" name="precio" id="precio">
+                    <label for="correo">Correo: </label>
+                    <input type="text" name="correo" id="correo">
                 </div>
                 <div class="form-group">
-                    <label for="cant">Cantidad:</label>
-                    <input type="number" name="cant" id="cant">
+                    <label for="telefono">Telefono: </label>
+                    <input type="number" name="telefono" id="telefono">
                 </div>
                 <input id="saveCli" type="submit" value="Guardar">
             </div>

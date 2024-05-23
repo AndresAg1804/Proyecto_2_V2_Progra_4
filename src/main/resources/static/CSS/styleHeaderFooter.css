@@ -57,48 +57,6 @@ body{
     max-height: 90%;
 }
 
-#mainforms {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    background-color: lightgray;
-    border-radius: 10px;
-    font-size: large;
-    font-family: "Arial Black";
-    margin-bottom: 12vh;
-    width: 40vh;
-}
-.container {
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    height: 100%;
-    width: 100%;
-
-}
-input{
-
-    margin: 10px;
-}
-input[type="button"] {
-    background-color: yellowgreen;
-    font-family: "Arial Black";
-}
-input[type="text"] {
-
-    font-family: "Arial Black";
-}
-input[type="password"] {
-
-    font-family: "Arial Black";
-}
-h2{
-    margin-top: 9vh;
-    font-weight: bold;
-    font-family: Castellar, serif;
-}
 
 
 

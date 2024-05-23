@@ -68,7 +68,7 @@ function renderheader(){
                     <a id="LogoutA" class="LogoutA" href="#">Logout</a>
                 </li>
                 <li>
-                    <a class="user" href="#">${loginstate.Usuarios.usern}</a>
+                    <a class="editME" id="editME" href="#">${loginstate.Usuarios.usern}</a>
                     
                 </li>
                 <li>
@@ -81,6 +81,7 @@ function renderheader(){
         document.getElementById('LogoutA').addEventListener('click', logout);
         document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
         document.getElementById('gofacturas').addEventListener("click",GOFACTURAS);
+        document.getElementById('editME').addEventListener("click",editME);
 
     }
 }
@@ -101,4 +102,7 @@ function GOPRODUCTOS(){
 
 function GOFACTURAS(){
     document.location="/Pages/FacturasPage/FacturasView.html";
+}
+function editME(){
+    document.location="/Pages/editME/editMEview.html";
 }

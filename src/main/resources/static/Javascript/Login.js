@@ -50,6 +50,7 @@ async function go_to_loginJS(){
             }
             else if(loginstate.Usuarios.proveedoresByIdprov.aprobado==false){
                     await logout();
+                    errorMessage(401);
             }
 
         }

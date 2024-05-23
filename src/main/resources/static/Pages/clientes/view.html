@@ -1,14 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Clientes</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/static/CSS/Menu.css">
-    <link rel="stylesheet" type="text/css" href="/static/CSS/productos.css">
-    <link rel="stylesheet" type="text/css" href="/static/CSS/styleHeaderFooter.css">
-    <script src="/static/Javascript/Login.js"> </script>
-    <script src="controller.js"> </script>
+
+    <script src="controller.js"></script>
+    <script src="../../Javascript/render_header_foot.js"></script>
+    <script src="../../Javascript/Login.js"></script>
+
+    <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
+    <link rel="stylesheet" href="../../CSS/Menu.css">
+    <link rel="stylesheet" href="../../CSS/clientes.css">
+
 </head>
 <body>
+<div id="header" class="header"></div>
+<!--Listo el html de productos, basicamente es todo a lo que se le va a agregar info mediante js, tablas/forms/inputs-->
+<div class="all" id="all">
+    <div class="clientes" id="clientes">
+        <div class="ex_para_overflow" id="ex_para_overflow">
+            <!--Aqui se guardara la tabla donde se mostraran los productos
+                y el form para hacer la busqueda-->
+            <table>
+                <thead>
+                <tr>
 
+                        <div class="form-group-buscar">
+                            <label for="idCr">ID:</label>
+                            <input type="text" name="idCr" id="idCr" value="">
+                            <button id="buscarCli" type="submit" >Buscar</button>
+                        </div>
+
+                </tr>
+                <tr>
+                    <th> </th>
+                    <th>Nombre</th>
+                    <th>ID</th>
+                    <th>Correo</th>
+                    <th>Telefono</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody class="containerClientes" id="containerClientes">
+                <!--Aqui es donde se va la lista del state-->
+                </tbody>
+
+            </table>
+        </div>
+        <div class="forms" id="forms">
+            <!--Aqui se guardara el form para hacer el guardado
+                y edicion de los productos-->
+            <div class="cliente-forms">
+                <div class="form-group">
+                    <!--
+                     <th:block th:if="${proEDIT != null}">
+                        <input type="hidden" name="idPr" th:value="${proEDIT != null ? proEDIT.getIdPr() : ''}">
+                    </th:block>
+                    <th:block th:unless="${proEDIT != null}">
+                        <label for="idPr">ID:</label>
+                        <input type="text" name="idPr" id="idPr" required th:value="${proEDIT != null ? proEDIT.getIdPr() : ''}">
+                    </th:block>
+                    -->
+
+                </div>
+                <label id="editLABEL">Editar</label>
+                <div class="form-group">
+                    <label for="nombreC">Nombre: </label>
+                    <input type="text" name="nombreC" id="nombreC">
+                </div>
+                <div class="form-group">
+                    <label for="idC">ID: </label>
+                    <input type="text" name="idC" id="idC">
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo: </label>
+                    <input type="text" name="correo" id="correo">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Telefono: </label>
+                    <input type="number" name="telefono" id="telefono">
+                </div>
+                <input id="saveCli" type="submit" value="Guardar">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer" class="footer"></div>
 </body>
 </html>

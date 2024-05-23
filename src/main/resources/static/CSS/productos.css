@@ -25,6 +25,20 @@
     padding: 0px;
 }
 
+.clientes {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 95%;
+    height: 70vh;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 0px;
+}
+
 .ex_para_overflow {
     width: 70%;
     overflow-x: hidden;
@@ -88,6 +102,26 @@
     text-align: center;
 }
 
+.clientes table {
+    border-collapse: collapse;
+    background-color: white;
+    color: black;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: 100%;
+    border: 4px solid white;
+    height: 90%;
+}
+
+.clientes th {
+    position: sticky;
+    top: 0;
+    background-color: lightgray;
+}
+.clientes td{
+    text-align: center;
+}
+
 .forms {
     background-color: lightgray;
     border-radius: 10px;
@@ -101,6 +135,13 @@
     color: black;
 }
 .producto-forms{
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+
+.cliente-forms{
     align-items: center;
     justify-content: center;
     align-content: center;

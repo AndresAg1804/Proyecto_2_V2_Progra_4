@@ -25,20 +25,20 @@ async function loadedProductos(event) {
     document.getElementById("savePro").addEventListener("click", saveProducto);
     console.log("Se hizo eventos click");
 
-/*
-    state_jsonProductos = sessionStorage.getItem("productos");
-    if(!state_jsonProductos){
-        console.log("Se hizo fetchAndList");
-        fetchAndListProductos(); //hacer
-    }
-    else{
-        console.log("Entro en sessionStorage existente");
-        statePro=JSON.parse(state_jsonProductos);
-        document.getElementById("idPrp").value=statePro.item.idPr;
-        render_listProductos(); //hacer
+    /*
+        state_jsonProductos = sessionStorage.getItem("productos");
+        if(!state_jsonProductos){
+            console.log("Se hizo fetchAndList");
+            fetchAndListProductos(); //hacer
+        }
+        else{
+            console.log("Entro en sessionStorage existente");
+            statePro=JSON.parse(state_jsonProductos);
+            document.getElementById("idPrp").value=statePro.item.idPr;
+            render_listProductos(); //hacer
 
-        NO ESTA FUNCIONANDO EL SESSIONSTORAGE AQUI
-    }*/
+            NO ESTA FUNCIONANDO EL SESSIONSTORAGE AQUI
+        }*/
 
     fetchAndListProductos();
 }
@@ -50,11 +50,10 @@ async function unloadedProductos(event){
 }
 //aqui voy tengo que hacer el metodo en el RestController de productos
 function fetchAndListProductos(){ //metodo para obtener la lista actual de personas
-    const request = new Request(apiPro+`/read?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
+    const request = new Request(apiPro+`/read`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        console.log("Fetch Exitoso");
         statePro.list = await response.json();
         render_listProductos(); //una vez cargada la lista llama a la funcion de render_list
     })();
@@ -67,9 +66,7 @@ function render_listProductos(){
 }
 
 function render_list_itemProductos(listado,item) {
-    var tr = document.createElement("tr"); //crea un elemento tr nuevo para cada iteracion del foreach
-    //<a href="/presentation/Facturar/AddProduct(idP=${item.id})}"><img class="editimg" src="../../../static/Images/check.png"></a>
-    //<a href="/set/editpro(idPr=${item.id},nombreP=${item.nombre},precio=${item.precio},cant=${item.cant})}"><img class="editimg" src="../../../static/Images/edit.png"></a>
+    var tr = document.createElement("tr");
     tr.innerHTML = `
                     <td>
                         <a><img class="editimg" src="/Images/check.png"></a>
@@ -87,12 +84,11 @@ function render_list_itemProductos(listado,item) {
                         <div>${item.cant}</div>
                     </td>
                     <td>
-                        <a><img class="editimg" src="/Images/edit.png"></a>
-                    </td>`;//cambia y agrega el html necesario para 1 linea de la tabla
-    //tr.querySelector("#edit").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
-    //tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});
-    //tr.querySelector("#xml").addEventListener("click",()=>{render_xml(item.cedula,item.nombre,item.sexo)});
-    listado.append(tr);//es como hacer un push con html?
+                        <a id="productoEdit"><img class="editimg" src="/Images/edit.png"></a>
+                    </td>`;
+    tr.querySelector("#productoEdit").addEventListener("click",()=>{load_itemProductoEdit(item.idPr,item.nombreP,item.precio,item.cant)});
+
+    listado.append(tr);
 }
 
 function empty_itemProducto(){
@@ -101,21 +97,27 @@ function empty_itemProducto(){
 
 function load_itemProducto(){
     statePro.ProductosC={ //solicita todos los campos y los iguala en item
-    //<label for="idPr">ID:</label>
-    //<input type="text" name="idPr" id="idPr">
+        //<label for="idPr">ID:</label>
+        //<input type="text" name="idPr" id="idPr">
         nombreP:document.getElementById("nombreP").value,
         idPr:document.getElementById("idPr").value,
         precio:document.getElementById("precio").value,
         cant:document.getElementById("cant").value,
         detallesByIdPr:null,
-        proveedoresByIdProd:loginstate.Usuarios.proveedoresByIdprov
+        proveedoresByIdProd:null
 
     };
 
 
-console.log("loadProducto Exitoso1");
+    console.log("loadProducto Exitoso1");
 }
 
+function load_itemProductoEdit(idPr,nombreP,precio,cant){
+    document.getElementById("idPr").value = idPr;
+    document.getElementById("nombreP").value = nombreP;
+    document.getElementById("precio").value = precio;
+    document.getElementById("cant").value = cant;
+}
 function validate_itemProducto(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
     console.log("validate item inicia");
@@ -135,12 +137,12 @@ function validate_itemProducto(){ //funcion para verificar que todos los campos 
         console.log("validate item error2");
     }
     if (statePro.ProductosC.precio==0){
-       // document.querySelector("#precio").classList.add("invalid");
+        // document.querySelector("#precio").classList.add("invalid");
         error=true;
         console.log("validate item error3");
     }
     if (statePro.ProductosC.cant==0){
-       // document.querySelector("#cant").classList.add("invalid");
+        // document.querySelector("#cant").classList.add("invalid");
         error=true;
         console.log("validate item error4");
     }
@@ -152,7 +154,7 @@ function saveProducto(){
     load_itemProducto();
     console.log("loadProducto Exitoso2");
     if(!validate_itemProducto()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiPro+'/add', {method: 'POST', //falta hacer el metodo en el RestController
+    let request = new Request(apiPro+`/add`, {method: 'POST', //falta hacer el metodo en el RestController
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(statePro.ProductosC)}); //creo que a esto le van a hacer falta parametros... el idpro,idPr
     (async ()=>{
@@ -163,15 +165,30 @@ function saveProducto(){
 }
 
 function searchProducto(){ //funcion para el search
+    load_itemProducto();
     idBusqueda = document.getElementById("idPrp").value;
-    statePro.ProductosC.idProd=idBusqueda;
-    const request = new Request(apiPro+`/search?id=${idBusqueda}`, //falta hacer el metodo en el RestController
-        {method: 'GET', headers: { }});
+    statePro.ProductosC.idPr=idBusqueda;
+    const request = new Request(apiPro+`/buscar`,
+    {method: 'POST',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(statePro.ProductosC)});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         statePro.list = await response.json();
-        render_list(); //renderiza la lista nuevamente con la info que recolecto
+        render_listProductos(); //renderiza la lista nuevamente con la info que recolecto
     })();
 }
 
+/*
+* @PostMapping("/buscar")
+    public Iterable<Producto> buscPro(@RequestBody Producto producto){
+
+        if(producto.getIdPr()==""){
+
+
+        }
+        return service.findAllByProveedorIdAndProductoId();
+        //Usuarios u=(Usuarios) session.getAttribute("usuario");
+        //session.setAttribute("productos_BUSQUEDA", service.findAllByProveedorIdAndProductoId(u.getProveedoresByIdprov().getIdP(),idPr));
+        //model.addAttribute("productos_BUSQUEDA", session.getAttribute("productos_BUSQUEDA"));
+
+    }*/

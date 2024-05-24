@@ -24,7 +24,7 @@ async function loadedClientes(event){
     document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
 
 
-   state_json=sessionStorage.getItem("clientes");
+   /*state_json=sessionStorage.getItem("clientes");
     if(!state_json){
         fetchAndListClientes();
     }
@@ -33,7 +33,7 @@ async function loadedClientes(event){
         document.getElementById("nombreBusquedaC").value=stateC.item.nombreC;
         render_listClientes();
     }
-
+*/
     fetchAndListClientes();
 }
 
@@ -168,7 +168,7 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
 
 //esta funcionalidad falta de implementar
 function edit(id){ //este llama a la funcion de read para encontrar a una persona con el id x
-    let request = new Request(backend+`/personas/${id}`,
+    let request = new Request(backend+`/clientes/${id}`,
         {method: 'GET', headers: {}});
     (async ()=>{
         const response = await fetch(request);
@@ -204,6 +204,14 @@ function saveCliente(){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        fetchAndListClientes();//actualiza la lista
+        fetchAndListClientes();
+        limpiarFormulario();
     })();
+}
+
+function limpiarFormulario(){
+    document.getElementById("nombreC").value = "";
+    document.getElementById("idC").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("telefono").value = "";
 }

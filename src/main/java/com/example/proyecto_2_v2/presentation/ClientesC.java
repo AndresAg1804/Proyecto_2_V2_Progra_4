@@ -25,8 +25,8 @@ public class ClientesC {
     }
 
     @GetMapping("/search")
-    public Iterable<Clientes> buscCliente(@RequestParam String cliente, @AuthenticationPrincipal UserDetailsIMP user ){
-        return service.buscarClientesPorNombreYProveedor(cliente, user.getPROVEDOR());
+    public Iterable<Clientes> buscCliente(@RequestParam String nombre, @AuthenticationPrincipal UserDetailsIMP user ){
+        return service.buscarClientesPorNombreYProveedor(nombre, user.getPROVEDOR());
     }
 
     @PostMapping("/add")

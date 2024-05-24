@@ -145,12 +145,12 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
 
     if (stateC.item.nombreC.length===0){
-        document.querySelector("#cedula").classList.add("invalid");
+        document.querySelector("#idC").classList.add("invalid");
         error=true;
     }
 
     if (stateC.item.idC.length===0){
-        document.querySelector("#nombre").classList.add("invalid");
+        document.querySelector("#nombreC").classList.add("invalid");
         error=true;
     }
 
@@ -159,7 +159,7 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
         error=true;
     }
 
-    if (stateC.item.telefono===0){
+    if (stateC.item.telefono.length===0){
         document.querySelector("#telefono").classList.add("invalid");
         error=true;
     }

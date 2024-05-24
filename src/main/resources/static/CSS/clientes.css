@@ -185,3 +185,5 @@
     margin-top: 0px;
     padding-top: 0px;
 }
+
+input.invalid {box-shadow: 0 0 2px 2px red;}

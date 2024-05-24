@@ -30,13 +30,15 @@ public class ClientesC {
     }
 
     @PostMapping("/add")
-    public void save(@RequestBody Clientes cliente,@AuthenticationPrincipal UserDetailsIMP user) {
+    public void save(@RequestBody Clientes cliente,@AuthenticationPrincipal UserDetailsIMP user, @RequestParam String mode) {
         try {
-            Clientes search = service.clienteFindByIDyProvedor(cliente.getIdC(), user.getPROVEDOR());
-            if(search!=null){
+            if(mode.equals("EDIT")){
                 service.clienteEdit(cliente, user.getPROVEDOR());
             }
             else {
+                if(service.clienteFindByIDyProvedor(cliente.getIdC(), user.getPROVEDOR())!=null){
+                    throw new ResponseStatusException(HttpStatus.CONFLICT);
+                }
                 cliente.setProveedoresByProveedorid(user.getPROVEDOR());
                 service.addCliente(cliente);
             }
@@ -45,49 +47,4 @@ public class ClientesC {
         }
     }
 
-    /*@GetMapping("/{id}")
-    public Clientes read(@PathVariable String id) {
-        try {
-            return service.clienteFindById(id);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/search")
-    public List<Clientes> findByNombre(@RequestParam String nombre) {
-        return service.clienteFindByNombre(nombre);
-    }
-
-    @PostMapping()
-    public void create(@RequestBody Clientes cliente) {
-        try {
-            service.clienteSave(cliente);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-    }
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        try {
-            service.clienteDelete(id);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping("/update/{id}")
-    public void update(@PathVariable String id, @RequestBody Clientes cliente) {
-        try {
-            Clientes existingCliente = service.clienteFindById(id);
-            if (existingCliente != null) {
-                cliente.setIdC(id);
-                service.clienteSave(cliente);
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-        }
-    }*/
 }

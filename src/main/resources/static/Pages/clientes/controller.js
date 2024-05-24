@@ -24,17 +24,16 @@ async function loadedClientes(event){
     document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
 
 
-   /*state_json=sessionStorage.getItem("clientes");
+   state_json = sessionStorage.getItem("clientes");
     if(!state_json){
         fetchAndListClientes();
     }
     else{
-        stateC=JSON.parse(state_json);
+        stateC = JSON.parse(state_json);
         document.getElementById("nombreBusquedaC").value=stateC.item.nombreC;
-        render_listClientes();
+        await searchClientes();
+        sessionStorage.setItem("clientes",JSON.stringify(stateC));
     }
-*/
-    fetchAndListClientes();
 }
 
 async function unloadedClientes(event){
@@ -133,6 +132,7 @@ function load_itemCliente(){
 }
 
 function load_itemClienteEdit(nombreC,idC,correo,telefono){
+    stateC.mode="EDIT";
     document.getElementById("nombreC").value = nombreC;
     document.getElementById("idC").value = idC;
     document.getElementById("correo").value = correo;
@@ -198,7 +198,7 @@ function saveCliente(){
     load_itemCliente();
 
     if(!validate_itemCliente()) return;
-    let request = new Request(apiC+`/add`, {method: 'POST',
+    let request = new Request(apiC+`/add?mode=${stateC.mode}`, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(stateC.item)});
     (async ()=>{
@@ -206,6 +206,7 @@ function saveCliente(){
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
         fetchAndListClientes();
         limpiarFormulario();
+        stateC.mode="ADD";
     })();
 }
 

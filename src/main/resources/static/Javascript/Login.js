@@ -67,6 +67,8 @@ function logout(event){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
+        sessionStorage.clear();
+        loginstate.logged=false;
         document.location="/Pages/LoginPage/LoginView.html";
     })();
 }

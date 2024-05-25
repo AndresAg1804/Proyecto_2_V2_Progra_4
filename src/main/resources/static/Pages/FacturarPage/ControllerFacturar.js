@@ -3,6 +3,7 @@ var apiFacturar="http://localhost:8080/api/facturar";
 
 const stateFacturar = {
     facturaDetalles: new Array(),
+    facturaProductos: new Array(),
     clienteFact: {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null},
     factura: {
         numFact: 0,
@@ -83,20 +84,21 @@ function goToProductos(){
 function putProducto(){
     productoSelected = document.getElementById("idP").value;
     //let request = new Request(`http://localhost:8080/api/clientes/search?nombre=${clienteSelected}`, {method: 'GET'});  /findClient
-
+    if(findProdInList(productoSelected)===0){
     let request = new Request(apiFacturar + `/findProducto?idProd=${productoSelected}`, {method: 'GET'});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         stateFacturar.productofac= await response.json();
+        stateFacturar.facturaProductos.push(stateFacturar.productofac);
         insertarEnLista(stateFacturar.productofac);
     })();
-
+    }
 }
 
 function insertarEnLista(producto){
     stateFacturar.facturaDetalles.push({
-        nombre:producto.nombreP,  cantidad: 1, precio:producto.precio, monto: producto.precio
+        nombre:producto.nombreP,  cantidad: 1, precio:producto.precio, monto: producto.precio, identi: producto.idPr
     });
     render_listFacturar();
 }
@@ -112,13 +114,13 @@ function renderFacturar(listado,item){
     let tr = document.createElement("tr");
     tr.innerHTML = `
                      <td>
-                        
+                        <img src="../../Images/xSymbol.png"/>
                     </td>
                     <td>
                         <div>${item.cantidad}</div>
                     </td>
                     <td>
-                        <div>${item.nombreP}</div>
+                        <div>${item.nombre}</div>
                     </td>
                     <td>
                         <div>${item.precio}</div>
@@ -126,14 +128,56 @@ function renderFacturar(listado,item){
                     <td>
                         <div>${item.monto}</div>
                     </td>
-                    <td>
-                        
+                    <td >
+                        <a id="upCantidad"><img src="../../Images/UpArrow.png"/></a>
                     </td>
-                    <td>
-                        
+                    <td >
+                       <a id="downCantidad"><img src="../../Images/DownArrow.png"/></a> 
                     </td>
                     `;
-    //tr.querySelector("#xmlMaker").addEventListener("click", ()=>{xmlMaking(item.numFact)});
+    tr.querySelector("#upCantidad").addEventListener("click", ()=>{aumentarCant(item.identi)});
+    tr.querySelector("#downCantidad").addEventListener("click", ()=>{disminuirCant(item.identi)});
     listado.append(tr);
+
 }
 
+
+function aumentarCant(idP){
+    for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1){
+        if(stateFacturar.facturaDetalles[i].identi===idP){
+            for(var x=0; x<stateFacturar.facturaProductos.length; x=x+1){
+                if(stateFacturar.facturaProductos[x].idPr===idP){
+                    var cant=stateFacturar.facturaProductos[x].cant;
+                }
+            }
+            if(stateFacturar.facturaDetalles[i].cantidad+1<=cant) {
+                stateFacturar.facturaDetalles[i].cantidad = stateFacturar.facturaDetalles[i].cantidad + 1;
+                stateFacturar.facturaDetalles[i].monto = stateFacturar.facturaDetalles[i].cantidad * stateFacturar.facturaDetalles[i].precio;
+                render_listFacturar();
+            }
+        }
+    }
+
+}
+
+function disminuirCant(idP){
+    for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1){
+        if(stateFacturar.facturaDetalles[i].identi===idP){
+            if( stateFacturar.facturaDetalles[i].cantidad-1>=1){
+            stateFacturar.facturaDetalles[i].cantidad= stateFacturar.facturaDetalles[i].cantidad-1;
+            stateFacturar.facturaDetalles[i].monto = stateFacturar.facturaDetalles[i].cantidad * stateFacturar.facturaDetalles[i].precio;
+            render_listFacturar();
+            }
+        }
+    }
+
+}
+
+function findProdInList(idP){
+    for(var x=0; x<stateFacturar.facturaProductos.length; x=x+1){
+        if(stateFacturar.facturaProductos[x].idPr===idP){
+            return 1;
+        }
+    }
+    return 0;
+}

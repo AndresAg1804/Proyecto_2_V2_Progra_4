@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,14 +33,16 @@ public class FacturasC {
         return service.findFacturasByIdProveedor(user.getPROVEDOR().getIdP());
    }
 
+   /*@PostMapping("/buscar")
+    public Iterable<Producto> buscPro(@RequestBody Producto producto,@AuthenticationPrincipal UserDetailsIMP user ){
+        if(producto.getIdPr().isEmpty()){
+            return service.get_all_productos_de_IDprovedor(user.getidP());
+        }
+        return service.findAllByProveedorIdAndProductoId(user.getidP(), producto.getIdPr());
+    }*/
     @GetMapping("/search")
-   public Iterable<Facturas> findbyProvAndNumF(@RequestParam String idP, @RequestParam String numFact){
-        Iterable<Facturas> lista = service.findAllByIdProveedorAndNumFact(idP, Integer.parseInt(numFact));
-       for(Facturas factura: lista){
-           factura.setProveedoresByIdProveedor(null);
-           factura.setDetallesByNumFact(null);
-       }
-       return lista;
+   public Iterable<Facturas> findbyProvAndNumF(@RequestParam int numFact,@AuthenticationPrincipal UserDetailsIMP user){
+        return service.findAllByIdProveedorAndNumFact(user.getPROVEDOR().getIdP(),numFact);
    }
 
    @GetMapping("/facturaXML")

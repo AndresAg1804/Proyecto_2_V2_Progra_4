@@ -79,17 +79,43 @@ function render_list_itemFact(listado,item) {
     listado.append(tr);
 }
 
-
-function searchFacturas(){
-    numFactura= document.getElementById("numFact").value;
-    let request = new Request(apiFacturas + `search?idP=${loginstate.idP}?numFact=${numFactura}`, {method: 'GET'});
+/*function searchProducto(){ //funcion para el search
+    load_itemProducto();
+    idBusqueda = document.getElementById("idPrp").value;
+    statePro.ProductosC.idPr=idBusqueda;
+    const request = new Request(apiPro+`/buscar`,
+    {method: 'POST',headers: { 'Content-Type': 'application/json'},body: JSON.stringify(statePro.ProductosC)});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        stateFac.list = await response.json();
-        render_listFacturas();
+        statePro.list = await response.json();
+        render_listProductos(); //renderiza la lista nuevamente con la info que recolecto
     })();
+}*/
+function searchFacturas(){
 
+    idBusquedaFact = document.getElementById("numFact").value;
+    if(idBusquedaFact.length==0){
+        fetchAndListFact();
+    }
+    else {
+        /*@GetMapping("/search")
+   public Iterable<Facturas> findbyProvAndNumF(@RequestParam int numFact,@AuthenticationPrincipal UserDetailsIMP user){
+        return service.findAllByIdProveedorAndNumFact(user.getPROVEDOR().getIdP(),numFact);
+   }*/
+        stateFac.factura.numFact = idBusquedaFact;
+        const request = new Request(apiFacturas + `/search?numFact=${idBusquedaFact}`,
+            {method: 'GET', headers: { }});
+        (async () => {
+            const response = await fetch(request);
+            if (!response.ok) {
+                errorMessage(response.status);
+                return;
+            }
+            stateFac.list = await response.json();
+            render_listFacturas();
+        })();
+    }
 }
 
 

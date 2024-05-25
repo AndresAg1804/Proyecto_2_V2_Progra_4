@@ -3,7 +3,7 @@ var apiC = backend + '/clientes';
 
 var stateC = {
     list: new Array(),
-    item: { nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null},
+    item: { nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null, nombreBC: ""},
     mode: "" // ADD, EDIT
 }
 
@@ -30,7 +30,7 @@ async function loadedClientes(event){
     }
     else{
         stateC = JSON.parse(state_json);
-        document.getElementById("nombreBusquedaC").value=stateC.item.nombreC;
+        document.getElementById("nombreBusquedaC").value=stateC.item.nombreBC;
         await searchClientes();
         sessionStorage.setItem("clientes",JSON.stringify(stateC));
     }
@@ -39,6 +39,7 @@ async function loadedClientes(event){
 async function unloadedClientes(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
         sessionStorage.setItem("clientes",JSON.stringify(stateC));
+        stateC.mode="ADD";
     }
 }
 
@@ -86,7 +87,7 @@ function render_list_itemClientes(listado,item){
 
 function searchClientes(){ //funcion para el search
     nombreBusquedaC = document.getElementById("nombreBusquedaC").value; //agarra el valor del elemento del html
-    stateC.item.nombreC=nombreBusquedaC;
+    stateC.item.nombreBC=nombreBusquedaC;
     const request = new Request(apiC+`/search?nombre=${nombreBusquedaC}`, //lo manda al RestController Personas
         {method: 'GET', headers: { }});
     (async ()=>{
@@ -123,6 +124,7 @@ function add(){
 }
 
 function load_itemCliente(){
+    document.getElementById("idC").disabled = false;
     stateC.item={ //solicita todos los campos y los iguala en item
         nombreC:document.getElementById("nombreC").value,
         idC:document.getElementById("idC").value,
@@ -137,6 +139,7 @@ function load_itemClienteEdit(nombreC,idC,correo,telefono){
     document.getElementById("idC").value = idC;
     document.getElementById("correo").value = correo;
     document.getElementById("telefono").value = telefono;
+    document.getElementById("idC").disabled = true;
 }
 
 function validate_itemCliente(){ //funcion para verificar que todos los campos hayan sido rellenados
@@ -145,12 +148,12 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
 
     if (stateC.item.nombreC.length===0){
-        document.querySelector("#idC").classList.add("invalid");
+        document.querySelector("#nombreC").classList.add("invalid");
         error=true;
     }
 
     if (stateC.item.idC.length===0){
-        document.querySelector("#nombreC").classList.add("invalid");
+        document.querySelector("#idC").classList.add("invalid");
         error=true;
     }
 
@@ -207,6 +210,7 @@ function saveCliente(){
         fetchAndListClientes();
         limpiarFormulario();
         stateC.mode="ADD";
+        empty_itemCliente();
     })();
 }
 

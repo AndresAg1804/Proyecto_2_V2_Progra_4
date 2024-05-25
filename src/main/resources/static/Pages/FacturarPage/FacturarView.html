@@ -3,27 +3,67 @@
 <head>
     <title>Login</title>
     <meta charset="UTF-8">
-
-    <script src="ControllerLog.js"></script>
-
-    <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
-    <link rel="stylesheet" href="../../CSS/productos.css">
-    <link rel="stylesheet" href="../../CSS/Menu.css">
-
+    <script src="../../Javascript/Login.js"></script>
     <script src="../../Javascript/render_header_foot.js"></script>
     <script src="ControllerFacturar.js"></script>
-    <script src="../../Javascript/Login.js"></script>
-
-
-    <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-
+    <link rel="stylesheet" href="../../CSS/Menu.css">
+    <link rel="stylesheet" href="../../CSS/styleHeaderFooter.css">
 
 </head>
 <body>
 <div id="header" class="header">
 </div>
 
-    <h1>En Facturara</h1>
+<div class="BoxSinTabla">
+    <label>Proveedor: </label>
+    <label id="nombreProv"></label>
+    <label for="nombreC">Cliente</label>
+    <input type="text" id="nombreC" name="nombreC" placeholder="Type the client ID" >
+    <input type="button" id="botonSeleccionaCliente"></input>
+    <label id="nombreCli"></label>
+
+    <div id="lupaBusquedaCliente">
+        <img src="../../Images/lupa.png"/>
+    </div>
+
+</div>
+
+
+<div id="box2"  >
+   <p>Productos</p>
+   <label for="idP">Producto: </label>
+   <input type="text" id="idP" name="idP" placeholder="Type the product ID" >
+   <input id="speb" type="button"></input>
+
+    <div id="botonBusquedaProducto">
+        <img src="../../Images/lupa.png"/>
+    </div>
+</div>
+
+<div id="boxspe">
+   <p>Productos</p>
+   <table>
+       <thead>
+       <tr>
+           <th>...</th>
+           <th>Cantidad</th>
+           <th>Producto</th>
+           <th>Precio</th>
+           <th>Monto</th>
+           <th></th>
+           <th></th>
+       </tr>
+       </thead>
+       <tbody id="containerDetalles">
+
+
+       </tbody>
+   </table>
+   <div id="finCompra">
+
+   </div>
+</div>
+
 
 <div id="footer" class="footer">
 </div>

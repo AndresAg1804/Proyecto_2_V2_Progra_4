@@ -68,12 +68,13 @@ function renderheader(){
                     <a id="LogoutA" class="LogoutA" href="#">Logout</a>
                 </li>
                 <li>
-                    <a class="user" href="#">${loginstate.Usuarios.usern}</a>
+                    <a class="editME" id="editME" href="#">${loginstate.Usuarios.usern}</a>
                     
                 </li>
                 <li>
                 <a href="#" id="gofacturas">Facturas</a>
                     <a href="#" id="goproductos">Productos</a>
+                    <a href="#" id="goclientes">Clientes</a>
                 </li>
             </ul>
         `;
@@ -81,6 +82,8 @@ function renderheader(){
         document.getElementById('LogoutA').addEventListener('click', logout);
         document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
         document.getElementById('gofacturas').addEventListener("click",GOFACTURAS);
+        document.getElementById('goclientes').addEventListener("click",GOCLIENTE);
+        document.getElementById('editME').addEventListener("click",editME);
 
     }
 }
@@ -99,6 +102,13 @@ function GOPRODUCTOS(){
     document.location="/Pages/Productos/ProductosView.html";
 }
 
+function GOCLIENTE(){
+    document.location="/Pages/clientes/view.html";
+}
+
 function GOFACTURAS(){
     document.location="/Pages/FacturasPage/FacturasView.html";
+}
+function editME(){
+    document.location="/Pages/editME/editMEview.html";
 }

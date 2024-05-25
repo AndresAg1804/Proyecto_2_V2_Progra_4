@@ -50,6 +50,7 @@ async function go_to_loginJS(){
             }
             else if(loginstate.Usuarios.proveedoresByIdprov.aprobado==false){
                     await logout();
+                    errorMessage(401);
             }
 
         }
@@ -66,6 +67,8 @@ function logout(event){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
+        sessionStorage.clear();
+        loginstate.logged=false;
         document.location="/Pages/LoginPage/LoginView.html";
     })();
 }

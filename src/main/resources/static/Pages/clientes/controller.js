@@ -3,7 +3,7 @@ var apiC = backend + '/clientes';
 
 var stateC = {
     list: new Array(),
-    item: { nombreC: "", idC: "", correo: "", telefono: 0},
+    item: { nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null, nombreBC: ""},
     mode: "" // ADD, EDIT
 }
 
@@ -24,27 +24,27 @@ async function loadedClientes(event){
     document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
 
 
-   state_json=sessionStorage.getItem("personas");
+   state_json = sessionStorage.getItem("clientes");
     if(!state_json){
         fetchAndListClientes();
     }
     else{
-        stateC=JSON.parse(state_json);
-        document.getElementById("nombreBusquedaC").value=stateC.item.nombreC;
-        render_listClientes();
+        stateC = JSON.parse(state_json);
+        document.getElementById("nombreBusquedaC").value=stateC.item.nombreBC;
+        await searchClientes();
+        sessionStorage.setItem("clientes",JSON.stringify(stateC));
     }
-
-    fetchAndListClientes();
 }
 
 async function unloadedClientes(event){
     if(document.visibilityState==="hidden" && loginstate.logged){
         sessionStorage.setItem("clientes",JSON.stringify(stateC));
+        stateC.mode="ADD";
     }
 }
 
 function fetchAndListClientes(){ //metodo para obtener la lista actual de personas
-    const request = new Request(apiC+`/read?id=${loginstate.Usuarios.proveedoresByIdprov.idP}`, {method: 'GET', headers: { }});
+    const request = new Request(apiC+`/read`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
@@ -54,7 +54,7 @@ function fetchAndListClientes(){ //metodo para obtener la lista actual de person
 }
 
 function render_listClientes(){
-    var listado=document.getElementById("listaClientes"); //agarra la lista del dom
+    var listado=document.getElementById("containerClientes"); //agarra la lista del dom
     listado.innerHTML=""; //limpia el html para volver a cargar la lista
     stateC.list.forEach( item=>render_list_itemClientes(listado,item)); //foreach de cada elemento en la lista
 }
@@ -66,28 +66,28 @@ function render_list_itemClientes(listado,item){
                         <a><img class="editimg" src="/Images/check.png"></a>
                     </td>
                     <td>
-                        <div>${item.idPr}</div>
+                        <div>${item.nombreC}</div>
                     </td>
                     <td>
-                        <div>${item.nombre}</div>
+                        <div>${item.idC}</div>
                     </td>
                     <td>
-                        <div>${item.precio}</div>
+                        <div>${item.correo}</div>
                     </td>
                     <td>
-                        <div>${item.cant}</div>
+                        <div>${item.telefono}</div>
                     </td>
                     <td>
-                        <a><img class="editimg" src="/Images/edit.png"></a>
+                        <a id="clienteEdit"><img class="editimg" src="/Images/edit.png"></a>
                     </td>`;
-    tr.querySelector(".editimg").addEventListener("click",()=>{edit(item.cedula);});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
+    tr.querySelector("#clienteEdit").addEventListener("click",()=>{load_itemClienteEdit(item.nombreC,item.idC,item.correo,item.telefono)});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
     /*tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});*/
     listado.append(tr);//es como hacer un push con html?
 }
 
 function searchClientes(){ //funcion para el search
     nombreBusquedaC = document.getElementById("nombreBusquedaC").value; //agarra el valor del elemento del html
-    stateC.item.nombreC=nombreBusquedaC;
+    stateC.item.nombreBC=nombreBusquedaC;
     const request = new Request(apiC+`/search?nombre=${nombreBusquedaC}`, //lo manda al RestController Personas
         {method: 'GET', headers: { }});
     (async ()=>{
@@ -99,7 +99,7 @@ function searchClientes(){ //funcion para el search
 }
 
 function empty_itemCliente(){
-    stateC.item={cedula:"", nombre:"",sexo:""};
+    stateC.item={cedulaC:"", nombreC:"", correo:"", telefono: 0};
 }
 
 function render_itemClientes(){
@@ -113,7 +113,7 @@ function render_itemClientes(){
 function add(){
     load_itemCliente();
     if(!validate_itemCliente()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiC, {method: 'POST',
+    let request = new Request(apiC+`/add`, {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(stateC.item)});
     (async ()=>{
@@ -124,6 +124,7 @@ function add(){
 }
 
 function load_itemCliente(){
+    document.getElementById("idC").disabled = false;
     stateC.item={ //solicita todos los campos y los iguala en item
         nombreC:document.getElementById("nombreC").value,
         idC:document.getElementById("idC").value,
@@ -132,27 +133,36 @@ function load_itemCliente(){
     };
 }
 
+function load_itemClienteEdit(nombreC,idC,correo,telefono){
+    stateC.mode="EDIT";
+    document.getElementById("nombreC").value = nombreC;
+    document.getElementById("idC").value = idC;
+    document.getElementById("correo").value = correo;
+    document.getElementById("telefono").value = telefono;
+    document.getElementById("idC").disabled = true;
+}
+
 function validate_itemCliente(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
 
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
 
-    if (stateC.item.nombreC.length==0){
-        document.querySelector("#cedula").classList.add("invalid");
+    if (stateC.item.nombreC.length===0){
+        document.querySelector("#nombreC").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.idC.length==0){
-        document.querySelector("#nombre").classList.add("invalid");
+    if (stateC.item.idC.length===0){
+        document.querySelector("#idC").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.correo.length==0){
+    if (stateC.item.correo.length===0){
         document.querySelector("#correo").classList.add("invalid");
         error=true;
     }
 
-    if (stateC.item.telefono==0){
+    if (stateC.item.telefono.length===0){
         document.querySelector("#telefono").classList.add("invalid");
         error=true;
     }
@@ -161,7 +171,7 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
 
 //esta funcionalidad falta de implementar
 function edit(id){ //este llama a la funcion de read para encontrar a una persona con el id x
-    let request = new Request(backend+`/personas/${id}`,
+    let request = new Request(backend+`/clientes/${id}`,
         {method: 'GET', headers: {}});
     (async ()=>{
         const response = await fetch(request);
@@ -188,11 +198,25 @@ function update() {
 }
 
 function saveCliente(){
-    if(stateC.mode=="ADD"){
-        add();
-    }
-    if(stateC.mode=="EDIT"){
-        update();
+    load_itemCliente();
+
+    if(!validate_itemCliente()) return;
+    let request = new Request(apiC+`/add?mode=${stateC.mode}`, {method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(stateC.item)});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
+        fetchAndListClientes();
+        limpiarFormulario();
+        stateC.mode="ADD";
         empty_itemCliente();
-    }
+    })();
+}
+
+function limpiarFormulario(){
+    document.getElementById("nombreC").value = "";
+    document.getElementById("idC").value = "";
+    document.getElementById("correo").value = "";
+    document.getElementById("telefono").value = "";
 }

@@ -215,4 +215,7 @@ public class Service {
         return productosRepository.findAllByProveedorIdAndProductoId(idProveedor,idProducto);
     }
 
+    public Iterable<Detalle> encuentraDetallesFactura(Facturas facturas){return detalleRepository.findDetallesByFacturasByNumFact(facturas);}
+
+
 }

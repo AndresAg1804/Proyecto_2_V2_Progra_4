@@ -114,7 +114,7 @@ function renderFacturar(listado,item){
     let tr = document.createElement("tr");
     tr.innerHTML = `
                      <td>
-                        <img src="../../Images/xSymbol.png"/>
+                         <a id="eliminaDato"><img src="../../Images/xSymbol.png"/></a>
                     </td>
                     <td>
                         <div>${item.cantidad}</div>
@@ -135,6 +135,7 @@ function renderFacturar(listado,item){
                        <a id="downCantidad"><img src="../../Images/DownArrow.png"/></a> 
                     </td>
                     `;
+    tr.querySelector("#eliminaDato").addEventListener("click", ()=>{eliminarElemento(item.identi)});
     tr.querySelector("#upCantidad").addEventListener("click", ()=>{aumentarCant(item.identi)});
     tr.querySelector("#downCantidad").addEventListener("click", ()=>{disminuirCant(item.identi)});
     listado.append(tr);
@@ -180,4 +181,8 @@ function findProdInList(idP){
         }
     }
     return 0;
+}
+
+function eliminarElemento(idP){
+
 }

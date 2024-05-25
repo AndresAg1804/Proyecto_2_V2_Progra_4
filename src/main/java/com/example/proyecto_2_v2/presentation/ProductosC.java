@@ -29,13 +29,12 @@ public class ProductosC {
     @PostMapping("/add")
     public void save(@RequestBody Producto producto,@AuthenticationPrincipal UserDetailsIMP user) {
         try {
-            Proveedores pro = service.get_ProvedorBYID(user.getidP());
-            Producto search = service.findProdByIdAndProveedor(producto.getIdPr(), pro);
+            Producto search = service.findProdByIdAndProveedor(producto.getIdPr(), user.getPROVEDOR());
             if(search!=null){
                 service.updateProducto(producto.getNombreP(),producto.getPrecio(),producto.getCant(),producto.getIdPr());
             }
             else {
-                producto.setProveedoresByIdProd(pro);
+                producto.setProveedoresByIdProd(user.getPROVEDOR());
                 service.addProdcuto(producto);
             }
         }catch (Exception ex) {

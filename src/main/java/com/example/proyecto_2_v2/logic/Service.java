@@ -80,6 +80,12 @@ public class Service {
     usuarioRepository.save(u);
     return u;
     }
+    public void update_nombreP_Proveedor(String nombreP,String idPr){
+        proveedorRepository.update_nombreP_Proveedor(nombreP,idPr);
+    }
+    public void update_pasw_Usuarios(String pasw, String usern){
+        usuarioRepository.updateByUsernAndPasw(pasw,usern);
+    }
 
     public boolean existeU(String us){
         return usuarioRepository.existsById(us);
@@ -208,5 +214,8 @@ public class Service {
     public List<Producto> findAllByProveedorIdAndProductoId(String idProveedor, String idProducto){
         return productosRepository.findAllByProveedorIdAndProductoId(idProveedor,idProducto);
     }
+
+    public Iterable<Detalle> encuentraDetallesFactura(Facturas facturas){return detalleRepository.findDetallesByFacturasByNumFact(facturas);}
+
 
 }

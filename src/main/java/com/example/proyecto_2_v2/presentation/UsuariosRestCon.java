@@ -22,6 +22,7 @@ public class UsuariosRestCon {
     @PostMapping("/newU")
     public Usuarios newUser(@RequestBody com.example.proyecto_2_v2.logic.Usuarios form, HttpServletRequest request) {
         var encoder = new BCryptPasswordEncoder();
+
         try {
 
             service.addUsuario(
@@ -58,22 +59,30 @@ public class UsuariosRestCon {
         //
         String authority = authorities.stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null);
         //esto es para sacar el tipo de UserDetailsIMP
-        try {
+        if(!nombreP.equals("none") && !pasw.equals("none") ){
+            try {
 
-            service.addUsuario(
-                    user.getUsername(),
-                    "{bcrypt}" + encoder.encode(pasw),
-                    authority,
-                    nombreP,
-                    user.getPROVEDOR().getIdP()
-            );
+                service.addUsuario(
+                        user.getUsername(),
+                        "{bcrypt}" + encoder.encode(pasw),
+                        authority,
+                        nombreP,
+                        user.getPROVEDOR().getIdP()
+                );
 
+            } catch (Exception e) {
+
+            }
         }
-        catch (Exception e){
-
+        else if (nombreP.equals("none") &&  !pasw.equals("none") ){
+            service.update_pasw_Usuarios("{bcrypt}" + encoder.encode(pasw),user.getUsername());
         }
-
+        else{
+            service.update_nombreP_Proveedor(nombreP,user.getPROVEDOR().getIdP());
+        }
     }
 
-
 }
+
+
+

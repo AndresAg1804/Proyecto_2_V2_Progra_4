@@ -29,10 +29,25 @@ function load_TEST_INFO(){
 function updateUser(){
     var nombreP=document.getElementById("nombreP").value;
     var pasw=document.getElementById("pasw").value;
+    var request="";
+    if(nombreP!=""&& pasw!="") {
+        request = new Request("http://localhost:8080/api" + "/user" +
+            `/editME?nombreP=${nombreP}&pasw=${pasw}`,
+            {method: 'POST', headers: {}});
+    }
+    else if(nombreP==""&& pasw!=""){
+        nombreP="none";
+        request = new Request("http://localhost:8080/api" + "/user" +
+            `/editME?nombreP=${nombreP}&pasw=${pasw}`,
+            {method: 'POST', headers: {}});
+    }
+    else {
+        pasw="none";
+        request = new Request("http://localhost:8080/api" + "/user" +
+            `/editME?nombreP=${nombreP}&pasw=${pasw}`,
+            {method: 'POST', headers: {}});
 
-    const request = new Request("http://localhost:8080/api"+"/user"+
-        `/editME?nombreP=${nombreP}&pasw=${pasw}`,
-        {method: 'POST', headers: { }});
+    }
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {

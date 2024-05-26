@@ -31,6 +31,18 @@ async function loadedFacturar(event) {
     document.getElementById("finCompra").addEventListener("click", guardarFactura);
     console.log("Se hizo eventos click");
 
+    //set them to be just a new Array() if it's the first time
+    if (! sessionStorage.getItem('factDet')) {
+        sessionStorage.setItem('factDet', JSON.stringify(new Array()));
+    }
+
+    if (! sessionStorage.getItem('factProd')) {
+        sessionStorage.setItem('factProd', JSON.stringify(new Array()));
+    }
+    else {
+        render_listFacturar()
+    }
+
 
 
     renderUser();
@@ -93,12 +105,20 @@ function insertarEnLista(producto){
     stateFacturar.facturaDetalles.push({
         nombre:producto.nombreP,  cantidad: 1, precio:producto.precio, monto: producto.precio, identi: producto.idPr
     });
+
+    //Para actualizar la lista
+    sessionStorage.setItem('factDet', JSON.stringify(stateFacturar.facturaDetalles));
+    sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.productofac));
     render_listFacturar();
 }
 
 function render_listFacturar(){
     var listado=document.getElementById("containerDetalles");
     listado.innerHTML="";
+
+    stateFacturar.facturaDetalles=JSON.parse(sessionStorage.getItem('factDet'));
+    stateFacturar.facturaProductos=JSON.parse(sessionStorage.getItem('factProd'));
+
     stateFacturar.facturaDetalles.forEach( item=>renderFacturar(listado,item));
 
 }
@@ -224,6 +244,7 @@ function guardaDetalles(){
             if (!response.ok) {errorMessage(response.status);return;}
         })();
     }
+    console.log()
     stateFacturar.facturaProductos = new Array();
     stateFacturar.facturaDetalles=new Array();
     stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
@@ -231,3 +252,4 @@ function guardaDetalles(){
     render_listFacturar();
     renderUser();
 }
+sessionStorage

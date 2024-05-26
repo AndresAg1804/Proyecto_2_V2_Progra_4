@@ -75,6 +75,7 @@ function renderheader(){
                 <a href="#" id="gofacturas">Facturas</a>
                     <a href="#" id="goproductos">Productos</a>
                     <a href="#" id="goclientes">Clientes</a>
+                    <a href="#" id="gofacturar">Facturar</a>
                 </li>
             </ul>
         `;
@@ -83,6 +84,7 @@ function renderheader(){
         document.getElementById('goproductos').addEventListener("click",GOPRODUCTOS);
         document.getElementById('gofacturas').addEventListener("click",GOFACTURAS);
         document.getElementById('goclientes').addEventListener("click",GOCLIENTE);
+        document.getElementById('gofacturar').addEventListener("click",GOFACTURAr);
         document.getElementById('editME').addEventListener("click",editME);
 
     }
@@ -108,6 +110,9 @@ function GOCLIENTE(){
 
 function GOFACTURAS(){
     document.location="/Pages/FacturasPage/FacturasView.html";
+}
+function GOFACTURAr(){
+    document.location="/Pages/FacturarPage/FacturarView.html";
 }
 function editME(){
     document.location="/Pages/editME/editMEview.html";

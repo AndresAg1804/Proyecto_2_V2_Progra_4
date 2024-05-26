@@ -1,9 +1,11 @@
 var apiPro="http://localhost:8080/api/productos";
 
 var statePro ={
+    facturaDetalles_PRODUCTOS: new Array(),
+    facturaProductos_PRODUCTOS: [],
     list: new Array(), //esta es la lsta de personas que se carga
     ProductosC : {nombreP:"",idPr:"",precio:0.0,cant:0,detallesByIdPr:null,proveedoresByIdProd:null},
-    mode: "" // ADD, EDIT
+    mode: ""
 }
 
 
@@ -48,6 +50,7 @@ async function unloadedProductos(event){
         sessionStorage.setItem("productos",JSON.stringify(statePro));
     }
 }
+
 //aqui voy tengo que hacer el metodo en el RestController de productos
 function fetchAndListProductos(){ //metodo para obtener la lista actual de personas
     const request = new Request(apiPro+`/read`, {method: 'GET', headers: { }});
@@ -69,7 +72,7 @@ function render_list_itemProductos(listado,item) {
     var tr = document.createElement("tr");
     tr.innerHTML = `
                     <td>
-                        <a><img class="editimg" src="/Images/check.png"></a>
+                        <a id="add2facturar"><img class="editimg" src="/Images/check.png"></a>
                     </td>
                     <td>
                         <div>${item.idPr}</div>
@@ -87,7 +90,8 @@ function render_list_itemProductos(listado,item) {
                         <a id="productoEdit"><img class="editimg" src="/Images/edit.png"></a>
                     </td>`;
     tr.querySelector("#productoEdit").addEventListener("click",()=>{load_itemProductoEdit(item.idPr,item.nombreP,item.precio,item.cant)});
-
+    //tr.querySelector("#add2facturar").addEventListener("click",()=>{});
+    tr.querySelector("#add2facturar").addEventListener("click",()=>{send2facturar(item.nombreP,item.idPr,item.precio,item.cant)});
     listado.append(tr);
 }
 
@@ -165,7 +169,7 @@ function saveProducto(){
 }
 
 function searchProducto(){ //funcion para el search
-    load_itemProducto();
+    load_itemProducto(); //for?
     idBusqueda = document.getElementById("idPrp").value;
     statePro.ProductosC.idPr=idBusqueda;
     const request = new Request(apiPro+`/buscar`,
@@ -176,6 +180,43 @@ function searchProducto(){ //funcion para el search
         statePro.list = await response.json();
         render_listProductos(); //renderiza la lista nuevamente con la info que recolecto
     })();
+}
+
+//Trabjando en agregar un producto desede ProductosView.html hacia-> factutatViwe.html
+function send2facturar(nombreP,idPr,precio,cant){
+    var x=0;
+    if (sessionStorage.getItem('factDet')) {
+        x=x+1;
+        statePro.facturaDetallesPRODUCTOS = JSON.parse(sessionStorage.getItem('factDet'));
+    } else {
+        statePro.facturaDetallesPRODUCTOS = [];
+    }
+
+
+    if (sessionStorage.getItem('factProd')) {
+        x=x+1;
+        statePro.facturaProductosPRODUCTOS = JSON.parse(sessionStorage.getItem('factProd'));
+    } else {
+        statePro.facturaProductosPRODUCTOS = [];
+    }
+
+    if(x==2){
+        statePro.ProductosC.nombreP=nombreP;
+        statePro.ProductosC.idPr=idPr;
+        statePro.ProductosC.precio=precio;
+        statePro.ProductosC.cant=cant;
+        statePro.ProductosC.detallesByIdPr=null;
+        statePro.ProductosC.proveedoresByIdProd=null;
+
+        statePro.facturaProductos_PRODUCTOS.push(statePro.ProductosC);
+        statePro.facturaDetalles_PRODUCTOS.push({
+            nombre:nombreP,  cantidad: 1, precio:precio, monto: precio, identi: idPr
+        });
+        sessionStorage.setItem('factDet', JSON.stringify(statePro.facturaDetalles_PRODUCTOS));
+        sessionStorage.setItem('factProd', JSON.stringify(statePro.facturaProductos_PRODUCTOS));
+
+        document.location="/Pages/FacturarPage/FacturarView.html";
+    }
 }
 
 /*

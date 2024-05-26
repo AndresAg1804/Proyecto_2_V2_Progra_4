@@ -33,6 +33,14 @@ public class FacturarC {
         int tot = (int) totalAmount;
         service.guardaFactura(clientId,provId,tot);
     }
+    @PostMapping  ("/guardaDet")
+    public void guardaDetalle(@RequestParam String cantidad, @RequestParam String monto, @RequestParam String idP, @RequestParam String idProd ){
+        double totalAmount = Double.parseDouble(monto);
+        int tot = (int) totalAmount;
+        int cant = Integer.parseInt(cantidad);
+        service.guardaDetalle(cant, tot, idP, idProd);
+    }
+
 
 /*
     @GetMapping ("/presentation/Facturar/FindClient") //Busqueda de cliente para facturar

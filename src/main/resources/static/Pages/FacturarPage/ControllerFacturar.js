@@ -206,8 +206,28 @@ function guardarFactura(){
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
-        stateFacturar.facturaProductos = new Array();
-        stateFacturar.facturaDetalles=new Array();
-        stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
+        guardaDetalles();
     })();
+}
+
+function guardaDetalles(){
+    var prov = loginstate.Usuarios.proveedoresByIdprov.idP;
+    for(var i=0; i<=stateFacturar.facturaDetalles.length; i=i+1) {
+        var cant=stateFacturar.facturaDetalles[i].cantidad;
+        var monto=stateFacturar.facturaDetalles[i].monto;
+        monto = monto.toString();
+        cant = cant.toString();
+        var idprod=stateFacturar.facturaDetalles[i].identi;
+        let request = new Request(apiFacturar + `/guardaDet?idP=${prov}&monto=${monto}&cantidad=${cant}&idProd=${idprod}`, {method: 'POST'});
+        (async ()=>{
+            const response = await fetch(request);
+            if (!response.ok) {errorMessage(response.status);return;}
+        })();
+    }
+    stateFacturar.facturaProductos = new Array();
+    stateFacturar.facturaDetalles=new Array();
+    stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
+    sessionStorage.removeItem("cliente");
+    render_listFacturar();
+    renderUser();
 }

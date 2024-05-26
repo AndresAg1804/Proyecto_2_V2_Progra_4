@@ -233,4 +233,19 @@ public class Service {
         facturasRepository.save(fact);
     }
 
+    public void guardaDetalle( int cantidad, int monto, String idP, String idProd ){
+        Proveedores prov = proveedorRepository.findByIdP(idP);
+        List<Facturas> listF = facturasRepository.findAllByProveedorId(idP);
+        Facturas factura = listF.getLast();
+        int i = detalleRepository.findAll().size() + 1;
+        Producto prod = productosRepository.findByIdPrAndProveedoresByIdProd(idProd, prov);
+        Detalle det = new Detalle();
+        det.setMonto(monto);
+        det.setCantidad(cantidad);
+        det.setNumD(i);
+        det.setFacturasByNumFact(factura);
+        det.setProductoByIdProd(prod);
+        detalleRepository.save(det);
+    }
+
 }

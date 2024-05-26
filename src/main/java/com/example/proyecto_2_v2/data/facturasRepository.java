@@ -28,4 +28,7 @@ public interface facturasRepository extends CrudRepository<Facturas, Integer> {
 
     @Query("SELECT f FROM Facturas f WHERE f.proveedoresByIdProveedor.idP = ?1 AND f.numFact = ?2")
     List<Facturas> findAllByIdProveedorAndNumFact(String idProveedor, int numFact);
+
+
+
 }

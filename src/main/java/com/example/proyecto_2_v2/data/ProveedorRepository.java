@@ -14,4 +14,6 @@ public interface ProveedorRepository extends CrudRepository<Proveedores, String>
     @Modifying
     @Query("update Proveedores p set p.nombreP = ?1  where p.idP = ?2")
     void update_nombreP_Proveedor(String nombreP,String idPr);
+
+    Proveedores findByIdP(String idP);
 }

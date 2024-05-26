@@ -173,6 +173,26 @@ public class Service {
         return false;
     }
 
+
+    public void updateProducto(String nombrep, double precio, int cantidad, String idpr) {
+        productosRepository.updateProducto(nombrep, precio, cantidad, idpr);
+    }
+    public Facturas get_FacturaXid(int numfact) {
+        return facturasRepository.getFacturasByNumFact(numfact);
+    }
+
+    public Iterable<Detalle> findDetallesByFacturaNumFact(int  numf){
+        return facturasRepository.findDetallesByFacturaNumFact(numf);
+    }
+    public List<Facturas> findAllByIdProveedorAndNumFact(String idProveedor, int numFact){
+        return facturasRepository.findAllByIdProveedorAndNumFact(idProveedor,numFact);
+    }
+    public List<Producto> findAllByProveedorIdAndProductoId(String idProveedor, String idProducto){
+        return productosRepository.findAllByProveedorIdAndProductoId(idProveedor,idProducto);
+    }
+
+    public Iterable<Detalle> encuentraDetallesFactura(Facturas facturas){return detalleRepository.findDetallesByFacturasByNumFact(facturas);}
+
     public void guardarFactura(Facturas fact, ArrayList<Detalle> lista){
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d");
@@ -196,26 +216,21 @@ public class Service {
             Producto prod = det.getProductoByIdProd();
             prod.setCant(prod.getCant() - det.getCantidad());
             productosRepository.updateProducto(prod.getNombreP(), prod.getPrecio(), prod.getCant(), prod.getIdPr());
-            }
         }
-    public void updateProducto(String nombrep, double precio, int cantidad, String idpr) {
-        productosRepository.updateProducto(nombrep, precio, cantidad, idpr);
-    }
-    public Facturas get_FacturaXid(int numfact) {
-        return facturasRepository.getFacturasByNumFact(numfact);
     }
 
-    public Iterable<Detalle> findDetallesByFacturaNumFact(int  numf){
-        return facturasRepository.findDetallesByFacturaNumFact(numf);
+    public void guardaFactura(String clientId, String provId, int monto){
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d");
+        String formattedDate = now.format(formatter);
+        Facturas fact = new Facturas();
+        Proveedores prov = proveedorRepository.findByIdP(provId);
+        Clientes cli = clienteRepository.findByIdCAndProveedoresByProveedorid(clientId, prov);
+        fact.setProveedoresByIdProveedor(prov);
+        fact.setClientesByIdCliente(cli);
+        fact.setFecha(formattedDate);
+        fact.setTotal(monto);
+        facturasRepository.save(fact);
     }
-    public List<Facturas> findAllByIdProveedorAndNumFact(String idProveedor, int numFact){
-        return facturasRepository.findAllByIdProveedorAndNumFact(idProveedor,numFact);
-    }
-    public List<Producto> findAllByProveedorIdAndProductoId(String idProveedor, String idProducto){
-        return productosRepository.findAllByProveedorIdAndProductoId(idProveedor,idProducto);
-    }
-
-    public Iterable<Detalle> encuentraDetallesFactura(Facturas facturas){return detalleRepository.findDetallesByFacturasByNumFact(facturas);}
-
 
 }

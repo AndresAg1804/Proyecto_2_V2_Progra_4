@@ -27,6 +27,12 @@ public class FacturarC {
     public Producto findProducto(@RequestParam String idProd,@AuthenticationPrincipal UserDetailsIMP user){
         return service.findProdByIdAndProveedor(idProd, user.getPROVEDOR());
     }
+    @PostMapping  ("/guardaFact")
+    public void guardaFactura(@RequestParam String clientId, @RequestParam String provId, @RequestParam String monto){
+        double totalAmount = Double.parseDouble(monto);
+        int tot = (int) totalAmount;
+        service.guardaFactura(clientId,provId,tot);
+    }
 
 /*
     @GetMapping ("/presentation/Facturar/FindClient") //Busqueda de cliente para facturar

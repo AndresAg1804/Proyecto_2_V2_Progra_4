@@ -5,14 +5,6 @@ const stateFacturar = {
     facturaDetalles: new Array(),
     facturaProductos: new Array(),
     clienteFact: {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null},
-    factura: {
-        numFact: 0,
-        total: 0,
-        detallesByNumFact: "",
-        clientesByIdCliente: "",
-        proveedoresByIdProveedor: "",
-        fecha: ""
-    },
     item: {nombre:"",  cantidad: 0, precio:0, monto: 0},
     productofac : {nombreP:"",idPr:"",precio:0.0,cant:0,detallesByIdPr:null,proveedoresByIdProd:null},
     mode: "",// ADD, EDIT
@@ -36,6 +28,7 @@ async function loadedFacturar(event) {
     document.getElementById("lupaBusquedaCliente").addEventListener("click", goToClientes);
     document.getElementById("speb").addEventListener("click", putProducto);
     document.getElementById("botonBusquedaProducto").addEventListener("click", goToProductos);
+    document.getElementById("finCompra").addEventListener("click", guardarFactura);
     console.log("Se hizo eventos click");
 
 
@@ -184,5 +177,37 @@ function findProdInList(idP){
 }
 
 function eliminarElemento(idP){
+    for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1) {
+        if (stateFacturar.facturaDetalles[i].identi === idP) {
+            stateFacturar.facturaDetalles.splice(i, 1);
+            render_listFacturar();
+        }
+    }
+        for(var x=0; x<stateFacturar.facturaProductos.length; x=x+1){
+            if(stateFacturar.facturaProductos[x].idPr===idP){
+                stateFacturar.facturaProductos.splice(x,1);
+            }
+    }
+}
 
+
+function guardarFactura(){
+    var cliente=JSON.parse(sessionStorage.getItem('cliente'));
+    var clienteId = cliente.idC;
+    var prov = loginstate.Usuarios.proveedoresByIdprov.idP;
+    var tot=0;
+    for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1) {
+      tot = tot + stateFacturar.facturaDetalles[i].monto;
+    }
+    tot = tot.toString();
+
+    //let request = new Request(apiFacturar + `/guardaFact?provId=${prov}?clientId=${clienteId}?monto=${tot}`, {method: 'POST'});
+    let request = new Request(apiFacturar + `/guardaFact?provId=${prov}&clientId=${clienteId}&monto=${tot}`, {method: 'POST'});
+    (async ()=>{
+        const response = await fetch(request);
+        if (!response.ok) {errorMessage(response.status);return;}
+        stateFacturar.facturaProductos = new Array();
+        stateFacturar.facturaDetalles=new Array();
+        stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
+    })();
 }

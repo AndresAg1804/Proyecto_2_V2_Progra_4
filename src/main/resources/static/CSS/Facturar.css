@@ -1,0 +1,72 @@
+#boxspe{
+    background-color: burlywood;
+    border-radius: 10px;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    font-weight: bolder;
+    text-align: center;
+    font-size: x-large;
+    max-height: 5%;
+    overflow-y: auto;
+overflow-x: hidden;
+}
+
+#boxspe table{
+    width:80%;
+    max-height: 5%;
+    overflow-y: auto;
+}
+
+#boxspe table td img{
+    width: 50px;
+    height:50px;
+}
+
+
+
+
+#speb{
+    height:30px;
+    width:30px;
+}
+
+.box2{
+    margin-left: 20%;
+    margin-right: 20%;
+    background-color: blanchedalmond;
+    align-items: center;
+    width: 40%;
+    height:100px;
+    margin-bottom:0px;
+    margin-top: 10px;
+}
+
+.box2 label, .box2 input, .box2 p{
+    height: 10px;
+    margin-bottom: 5px;
+}
+
+.box2 label, .box2 input{
+    display:inline-block;
+    width:100px;
+}
+
+.BoxSinTabla{
+    margin-left: 20%;
+    margin-right: 20%;
+    background-color: blanchedalmond;
+    align-items: center;
+    width: 40%;
+}
+.BoxSinTabla div{
+    display: inline-block;
+}
+
+.BoxSinTabla div img, .box2 div img{
+    width: 50px;
+    height:50px;
+    display: inline-block;
+    border-radius: 50px;
+}

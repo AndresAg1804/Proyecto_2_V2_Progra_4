@@ -2,8 +2,8 @@
 var apiFacturar="http://localhost:8080/api/facturar";
 
 const stateFacturar = {
-    facturaDetalles: new Array(),
-    facturaProductos: new Array(),
+    facturaDetalles: [],
+    facturaProductos: [],
     clienteFact: {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null},
     item: {nombre:"",  cantidad: 0, precio:0, monto: 0},
     productofac : {nombreP:"",idPr:"",precio:0.0,cant:0,detallesByIdPr:null,proveedoresByIdProd:null},
@@ -13,7 +13,7 @@ const stateFacturar = {
 
 
 document.addEventListener("DOMContentLoaded",loadedFacturar);
-document.addEventListener("visibilitychange",unloadedFacturar);
+//document.addEventListener("visibilitychange",loadedFacturar);
 
 async function loadedFacturar(event) {
     try {
@@ -32,7 +32,7 @@ async function loadedFacturar(event) {
     console.log("Se hizo eventos click");
 
     //set them to be just a new Array() if it's the first time
-    if (! sessionStorage.getItem('factDet')) {
+   /* if (! sessionStorage.getItem('factDet')) {
         sessionStorage.setItem('factDet', JSON.stringify(new Array()));
     }
 
@@ -41,12 +41,12 @@ async function loadedFacturar(event) {
     }
     else {
         render_listFacturar()
-    }
+    }*/
 
 
 
     renderUser();
-    renderFacturar();
+    render_listFacturar();
 }
 
 async function unloadedFacturar(event){
@@ -71,10 +71,11 @@ function putCliente(){
 }
 
 function renderUser(){
+    if (sessionStorage.getItem('cliente')) {
     var cliente=JSON.parse(sessionStorage.getItem('cliente'));
     espacio =document.getElementById("nombreCli");
-    //espacio.innerText = `${stateFacturar.clienteFact.nombreC}`;
     espacio.innerText = `${cliente.nombreC}`;
+    }
 }
 
 function goToClientes(){
@@ -107,8 +108,10 @@ function insertarEnLista(producto){
     });
 
     //Para actualizar la lista
+    sessionStorage.removeItem('factDet');
+    sessionStorage.removeItem('factProd');
     sessionStorage.setItem('factDet', JSON.stringify(stateFacturar.facturaDetalles));
-    sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.productofac));
+    sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.facturaProductos));
     render_listFacturar();
 }
 
@@ -116,8 +119,10 @@ function render_listFacturar(){
     var listado=document.getElementById("containerDetalles");
     listado.innerHTML="";
 
-    stateFacturar.facturaDetalles=JSON.parse(sessionStorage.getItem('factDet'));
-    stateFacturar.facturaProductos=JSON.parse(sessionStorage.getItem('factProd'));
+    let listaDet = JSON.parse(sessionStorage.getItem('factDet'));
+let listaProd= JSON.parse(sessionStorage.getItem('factProd'));
+    stateFacturar.facturaDetalles= listaDet;
+    stateFacturar.facturaProductos= listaProd;
 
     stateFacturar.facturaDetalles.forEach( item=>renderFacturar(listado,item));
 
@@ -167,6 +172,10 @@ function aumentarCant(idP){
             if(stateFacturar.facturaDetalles[i].cantidad+1<=cant) {
                 stateFacturar.facturaDetalles[i].cantidad = stateFacturar.facturaDetalles[i].cantidad + 1;
                 stateFacturar.facturaDetalles[i].monto = stateFacturar.facturaDetalles[i].cantidad * stateFacturar.facturaDetalles[i].precio;
+                sessionStorage.removeItem('factDet');
+                sessionStorage.removeItem('factProd');
+                sessionStorage.setItem('factDet', JSON.stringify(stateFacturar.facturaDetalles));
+                sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.facturaProductos));
                 render_listFacturar();
             }
         }
@@ -180,6 +189,10 @@ function disminuirCant(idP){
             if( stateFacturar.facturaDetalles[i].cantidad-1>=1){
             stateFacturar.facturaDetalles[i].cantidad= stateFacturar.facturaDetalles[i].cantidad-1;
             stateFacturar.facturaDetalles[i].monto = stateFacturar.facturaDetalles[i].cantidad * stateFacturar.facturaDetalles[i].precio;
+                sessionStorage.removeItem('factDet');
+                sessionStorage.removeItem('factProd');
+                sessionStorage.setItem('factDet', JSON.stringify(stateFacturar.facturaDetalles));
+                sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.facturaProductos));
             render_listFacturar();
             }
         }
@@ -249,7 +262,7 @@ function guardaDetalles(){
     stateFacturar.facturaDetalles=new Array();
     stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
     sessionStorage.removeItem("cliente");
+    //poner los remove de las listas
     render_listFacturar();
     renderUser();
 }
-sessionStorage

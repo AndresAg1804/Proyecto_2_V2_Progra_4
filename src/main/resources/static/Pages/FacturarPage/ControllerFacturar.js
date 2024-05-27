@@ -71,6 +71,8 @@ function putCliente(){
 }
 
 function renderUser(){
+    espacio =document.getElementById("nombreCli");
+    espacio.innerText = "";
     if (sessionStorage.getItem('cliente')) {
     var cliente=JSON.parse(sessionStorage.getItem('cliente'));
     espacio =document.getElementById("nombreCli");
@@ -118,14 +120,15 @@ function insertarEnLista(producto){
 function render_listFacturar(){
     var listado=document.getElementById("containerDetalles");
     listado.innerHTML="";
+    if (sessionStorage.getItem('factDet') && sessionStorage.getItem('factProd')) {
 
-    let listaDet = JSON.parse(sessionStorage.getItem('factDet'));
-let listaProd= JSON.parse(sessionStorage.getItem('factProd'));
-    stateFacturar.facturaDetalles= listaDet;
-    stateFacturar.facturaProductos= listaProd;
+        let listaDet = JSON.parse(sessionStorage.getItem('factDet'));
+        let listaProd = JSON.parse(sessionStorage.getItem('factProd'));
+        stateFacturar.facturaDetalles = listaDet;
+        stateFacturar.facturaProductos = listaProd;
 
-    stateFacturar.facturaDetalles.forEach( item=>renderFacturar(listado,item));
-
+        stateFacturar.facturaDetalles.forEach(item => renderFacturar(listado, item));
+    }
 }
 
 function renderFacturar(listado,item){
@@ -240,12 +243,20 @@ function guardarFactura(){
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         guardaDetalles();
+        stateFacturar.facturaProductos = [];
+        stateFacturar.facturaDetalles=[];
+        stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
+        sessionStorage.removeItem("cliente");
+        sessionStorage.removeItem('factDet');
+        sessionStorage.removeItem('factProd');
+        render_listFacturar();
+        renderUser();
     })();
 }
 
 function guardaDetalles(){
     var prov = loginstate.Usuarios.proveedoresByIdprov.idP;
-    for(var i=0; i<=stateFacturar.facturaDetalles.length; i=i+1) {
+    for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1) {
         var cant=stateFacturar.facturaDetalles[i].cantidad;
         var monto=stateFacturar.facturaDetalles[i].monto;
         monto = monto.toString();
@@ -255,14 +266,8 @@ function guardaDetalles(){
         (async ()=>{
             const response = await fetch(request);
             if (!response.ok) {errorMessage(response.status);return;}
+            console.log("se guardo bien un detalle");
         })();
     }
-    console.log()
-    stateFacturar.facturaProductos = new Array();
-    stateFacturar.facturaDetalles=new Array();
-    stateFacturar.clienteFact= {nombreC: "", idC: "", correo: "", telefono: 0, proveedoresByProveedorid: null, facturasByIdC: null};
-    sessionStorage.removeItem("cliente");
-    //poner los remove de las listas
-    render_listFacturar();
-    renderUser();
+
 }

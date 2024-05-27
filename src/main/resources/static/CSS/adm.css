@@ -59,3 +59,12 @@
     align-items: center;
     align-content: center;
 }
+#AprovarDesAprovar{
+    font-size: large;
+    background-color: yellowgreen;
+    font-family: "Arial Black";
+}
+#list td input[type="button"] {
+    background-color: yellowgreen;
+    font-family: "Arial Black";
+}

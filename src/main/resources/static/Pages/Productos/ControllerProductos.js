@@ -111,7 +111,7 @@ function load_itemProducto(){
         proveedoresByIdProd:null
 
     };
-
+    document.getElementById("idPr").disabled = false;
 
     console.log("loadProducto Exitoso1");
 }
@@ -121,6 +121,8 @@ function load_itemProductoEdit(idPr,nombreP,precio,cant){
     document.getElementById("nombreP").value = nombreP;
     document.getElementById("precio").value = precio;
     document.getElementById("cant").value = cant;
+    document.getElementById("idPr").disabled = true;
+
 }
 function validate_itemProducto(){ //funcion para verificar que todos los campos hayan sido rellenados
     var error=false;
@@ -165,6 +167,7 @@ function saveProducto(){
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
         fetchAndListProductos();//actualiza la lista
+        limpiar()
     })();
 }
 
@@ -226,6 +229,12 @@ function send2facturar(nombreP,idPr,precio,cant){
 
         document.location="/Pages/FacturarPage/FacturarView.html";
  //   }
+}
+function limpiar(){
+    document.getElementById("idPr").value = "";
+    document.getElementById("nombreP").value = "";
+    document.getElementById("precio").value = "";
+    document.getElementById("cant").value = "";
 }
 
 /*

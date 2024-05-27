@@ -1,7 +1,7 @@
 var apiPro="http://localhost:8080/api/productos";
 
 var statePro ={
-    facturaDetalles_PRODUCTOS: new Array(),
+    facturaDetalles_PRODUCTOS: [],
     facturaProductos_PRODUCTOS: [],
     list: new Array(), //esta es la lsta de personas que se carga
     ProductosC : {nombreP:"",idPr:"",precio:0.0,cant:0,detallesByIdPr:null,proveedoresByIdProd:null},
@@ -184,23 +184,25 @@ function searchProducto(){ //funcion para el search
 
 //Trabjando en agregar un producto desede ProductosView.html hacia-> factutatViwe.html
 function send2facturar(nombreP,idPr,precio,cant){
-    var x=0;
+   var x=0;
     if (sessionStorage.getItem('factDet')) {
         x=x+1;
-        statePro.facturaDetallesPRODUCTOS = JSON.parse(sessionStorage.getItem('factDet'));
+        statePro.facturaDetalles_PRODUCTOS = JSON.parse(sessionStorage.getItem('factDet'));
     } else {
-        statePro.facturaDetallesPRODUCTOS = [];
+        statePro.facturaDetalles_PRODUCTOS = [];
     }
 
 
     if (sessionStorage.getItem('factProd')) {
         x=x+1;
-        statePro.facturaProductosPRODUCTOS = JSON.parse(sessionStorage.getItem('factProd'));
+        statePro.facturaProductos_PRODUCTOS = JSON.parse(sessionStorage.getItem('factProd'));
     } else {
-        statePro.facturaProductosPRODUCTOS = [];
+        statePro.facturaProductos_PRODUCTOS = [];
     }
 
-    if(x==2){
+   // if(x==2){
+  //  statePro.facturaDetalles_PRODUCTOS = JSON.parse(sessionStorage.getItem('factDet'));
+  //  statePro.facturaProductos_PRODUCTOS = JSON.parse(sessionStorage.getItem('factProd'));
         statePro.ProductosC.nombreP=nombreP;
         statePro.ProductosC.idPr=idPr;
         statePro.ProductosC.precio=precio;
@@ -212,11 +214,13 @@ function send2facturar(nombreP,idPr,precio,cant){
         statePro.facturaDetalles_PRODUCTOS.push({
             nombre:nombreP,  cantidad: 1, precio:precio, monto: precio, identi: idPr
         });
+    sessionStorage.removeItem('factDet');
+    sessionStorage.removeItem('factProd');
         sessionStorage.setItem('factDet', JSON.stringify(statePro.facturaDetalles_PRODUCTOS));
         sessionStorage.setItem('factProd', JSON.stringify(statePro.facturaProductos_PRODUCTOS));
 
         document.location="/Pages/FacturarPage/FacturarView.html";
-    }
+ //   }
 }
 
 /*

@@ -46,12 +46,12 @@ async function editApprove(uservar){
     let Usuario={usern:uservar,
         pasw:null
     };
-    //creando un OBJECTO user con atributos id y password los nombres de variables tiene que ser igual eso en definitiva
+
     const request = new Request('http://localhost:8080/api'+'/user'+'/AprovarDesAprovar', {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(Usuario)});
     await (async () => {
-        const response = await fetch(request); //jsuto aqui, aqui se envia el request
+        const response = await fetch(request);
         if (!response.ok) {
             errorMessage(response.status);
             return;

@@ -31,14 +31,14 @@ async function go_to_loginJS(){
     let Usuario={usern:document.getElementById("usern").value,
         pasw:document.getElementById("pasw").value
     };
-    //creando un OBJECTO user con atributos id y password los nombres de variables tiene que ser igual eso en definitiva
+
     let request = new Request(api_login+'/login', {method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(Usuario)});
 
-    //pero cuando envio el request ????
+
     (async ()=>{
-        const response = await fetch(request); //jsuto aqui, aqui se envia el request
+        const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         await checkuser();
         if(loginstate.logged){

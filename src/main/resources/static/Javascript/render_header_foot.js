@@ -53,7 +53,7 @@ function renderheader(){
         }
         document.getElementById('gologin').addEventListener("click",GOLOGINVIEW);
 
-        //ojo que si se hace un get element by ID que no existe error
+
     }
     else{
         html=`

@@ -53,7 +53,7 @@ function addNEWUSER(){
 
 
         (async ()=>{
-            const response = await fetch(request); //jsuto aqui, aqui se envia el request
+            const response = await fetch(request);
             if (!response.ok) {errorMessage(response.status);return;}
             document.location="/Pages/LoginPage/LoginView.html";
         })();
@@ -89,7 +89,7 @@ function addNEWUSER(){
 
 
         (async ()=>{
-            const response = await fetch(request); //jsuto aqui, aqui se envia el request
+            const response = await fetch(request);
             if (!response.ok) {errorMessage(response.status);return;}
             document.location="/Pages/LoginPage/LoginView.html";
         })();

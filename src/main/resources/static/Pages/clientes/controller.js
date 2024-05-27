@@ -20,8 +20,8 @@ async function loadedClientes(event){
         return;
     }
 
-    document.getElementById("buscarCli").addEventListener("click",searchClientes); //boton de search en html
-    document.getElementById("saveCli").addEventListener("click", saveCliente); //boton para abrir el menu de creacion de persona
+    document.getElementById("buscarCli").addEventListener("click",searchClientes); 
+    document.getElementById("saveCli").addEventListener("click", saveCliente);
 
 
    state_json = sessionStorage.getItem("clientes");
@@ -43,24 +43,24 @@ async function unloadedClientes(event){
     }
 }
 
-function fetchAndListClientes(){ //metodo para obtener la lista actual de personas
+function fetchAndListClientes(){
     const request = new Request(apiC+`/read`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         stateC.list = await response.json();
-        render_listClientes(); //una vez cargada la lista llama a la funcion de render_list
+        render_listClientes();
     })();
 }
 
 function render_listClientes(){
-    var listado=document.getElementById("containerClientes"); //agarra la lista del dom
-    listado.innerHTML=""; //limpia el html para volver a cargar la lista
-    stateC.list.forEach( item=>render_list_itemClientes(listado,item)); //foreach de cada elemento en la lista
+    var listado=document.getElementById("containerClientes");
+    listado.innerHTML="";
+    stateC.list.forEach( item=>render_list_itemClientes(listado,item));
 }
 
 function render_list_itemClientes(listado,item){
-    var tr =document.createElement("tr"); //crea un elemento tr nuevo para cada iteracion del foreach
+    var tr =document.createElement("tr");
     tr.innerHTML=`
                     <td>
                         <a><img class="editimg" src="/Images/check.png"></a>
@@ -80,47 +80,26 @@ function render_list_itemClientes(listado,item){
                     <td>
                         <a id="clienteEdit"><img class="editimg" src="/Images/edit.png"></a>
                     </td>`;
-    tr.querySelector("#clienteEdit").addEventListener("click",()=>{load_itemClienteEdit(item.nombreC,item.idC,item.correo,item.telefono)});//para cada elemento con la clase edit y delete se les agrega el evento correspondiente
-    /*tr.querySelector("#delete").addEventListener("click",()=>{remove(item.cedula);});*/
-    listado.append(tr);//es como hacer un push con html?
+    tr.querySelector("#clienteEdit").addEventListener("click",()=>{load_itemClienteEdit(item.nombreC,item.idC,item.correo,item.telefono)});
+    tr.querySelector(".editimg").addEventListener("click",()=>{sendClienteFacturar(item.nombreC,item.idC,item.correo,item.telefono)});
+    listado.append(tr);
 }
 
 function searchClientes(){ //funcion para el search
-    nombreBusquedaC = document.getElementById("nombreBusquedaC").value; //agarra el valor del elemento del html
+    nombreBusquedaC = document.getElementById("nombreBusquedaC").value;
     stateC.item.nombreBC=nombreBusquedaC;
-    const request = new Request(apiC+`/search?nombre=${nombreBusquedaC}`, //lo manda al RestController Personas
+    const request = new Request(apiC+`/search?nombre=${nombreBusquedaC}`,
         {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         stateC.list = await response.json();
-        render_listClientes(); //renderiza la lista nuevamente con la info que recolecto
+        render_listClientes();
     })();
 }
 
 function empty_itemCliente(){
     stateC.item={cedulaC:"", nombreC:"", correo:"", telefono: 0};
-}
-
-function render_itemClientes(){
-    document.querySelectorAll('#itemview input').forEach( (i)=> {i.classList.remove("invalid");});
-    document.getElementById("nombreC").value = stateC.item.nombreC;
-    document.getElementById("idC").value = stateC.item.idC;
-    document.getElementById("correo").value = stateC.item.correo;
-    document.getElementById("telefono").value = stateC.item.telefono;
-}
-
-function add(){
-    load_itemCliente();
-    if(!validate_itemCliente()) return;//verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiC+`/add`, {method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(stateC.item)});
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        fetchAndListClientes();//actualiza la lista
-    })();
 }
 
 function load_itemCliente(){
@@ -142,7 +121,7 @@ function load_itemClienteEdit(nombreC,idC,correo,telefono){
     document.getElementById("idC").disabled = true;
 }
 
-function validate_itemCliente(){ //funcion para verificar que todos los campos hayan sido rellenados
+function validate_itemCliente(){
     var error=false;
 
     document.querySelectorAll('input').forEach( (i)=> {i.classList.remove("invalid");});
@@ -169,34 +148,6 @@ function validate_itemCliente(){ //funcion para verificar que todos los campos h
     return !error;
 }
 
-//esta funcionalidad falta de implementar
-function edit(id){ //este llama a la funcion de read para encontrar a una persona con el id x
-    let request = new Request(backend+`/clientes/${id}`,
-        {method: 'GET', headers: {}});
-    (async ()=>{
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}
-        stateC.item = await response.json();
-        stateC.mode="EDIT";
-        render_itemClientes();
-        fetchAndListClientes();
-    })();
-}
-function update() {
-    load_itemCliente();
-    if (!validate_itemCliente()) return; // verifica que todos los campos hayan sido seleccionados
-    let request = new Request(apiC +`/update/${stateC.item.idC}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(stateC.item)
-    });
-    (async () => {
-        const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
-        fetchAndListClientes();//actualiza la lista
-    })();
-}
-
 function saveCliente(){
     load_itemCliente();
 
@@ -206,7 +157,7 @@ function saveCliente(){
         body: JSON.stringify(stateC.item)});
     (async ()=>{
         const response = await fetch(request);
-        if (!response.ok) {errorMessage(response.status);return;}//si pasa de aqui significa que fue agregado con exito
+        if (!response.ok) {errorMessage(response.status);return;}
         fetchAndListClientes();
         limpiarFormulario();
         stateC.mode="ADD";
@@ -219,4 +170,15 @@ function limpiarFormulario(){
     document.getElementById("idC").value = "";
     document.getElementById("correo").value = "";
     document.getElementById("telefono").value = "";
+}
+
+function sendClienteFacturar(nombreC,idC,correo,telefono){
+    stateC.item.nombreC=nombreC;
+    stateC.item.idC=idC;
+    stateC.item.correo=correo;
+    stateC.item.telefono=telefono;
+    stateC.item.proveedoresByProveedorid=null;
+    stateC.item.facturasByIdC=null;
+    sessionStorage.setItem("cliente",JSON.stringify(stateC.item));
+    document.location="/Pages/FacturarPage/FacturarView.html";
 }

@@ -15,22 +15,18 @@
 </head>
 <body>
 <div id="header" class="header"></div>
-<!--Listo el html de productos, basicamente es todo a lo que se le va a agregar info mediante js, tablas/forms/inputs-->
 <div class="all" id="all">
     <div class="clientes" id="clientes">
         <div class="ex_para_overflow" id="ex_para_overflow">
-            <!--Aqui se guardara la tabla donde se mostraran los productos
-                y el form para hacer la busqueda-->
+
             <table>
                 <thead>
                 <tr>
-
                         <div class="form-group-buscar">
                             <label for="nombreBusquedaC">Nombre:</label>
                             <input type="text" name="nombreBusquedaC" id="nombreBusquedaC" value="">
                             <button id="buscarCli" type="submit" >Buscar</button>
                         </div>
-
                 </tr>
                 <tr>
                     <th> </th>
@@ -48,20 +44,9 @@
             </table>
         </div>
         <div class="forms" id="forms">
-            <!--Aqui se guardara el form para hacer el guardado
-                y edicion de los productos-->
+
             <div class="cliente-forms">
                 <div class="form-group">
-                    <!--
-                     <th:block th:if="${proEDIT != null}">
-                        <input type="hidden" name="idPr" th:value="${proEDIT != null ? proEDIT.getIdPr() : ''}">
-                    </th:block>
-                    <th:block th:unless="${proEDIT != null}">
-                        <label for="idPr">ID:</label>
-                        <input type="text" name="idPr" id="idPr" required th:value="${proEDIT != null ? proEDIT.getIdPr() : ''}">
-                    </th:block>
-                    -->
-
                 </div>
                 <label id="editLABEL">Clientes</label>
                 <div class="form-group">

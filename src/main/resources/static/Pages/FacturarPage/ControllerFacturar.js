@@ -216,12 +216,16 @@ function eliminarElemento(idP){
     for(var i=0; i<stateFacturar.facturaDetalles.length; i=i+1) {
         if (stateFacturar.facturaDetalles[i].identi === idP) {
             stateFacturar.facturaDetalles.splice(i, 1);
+            sessionStorage.removeItem('factDet');
+            sessionStorage.setItem('factDet', JSON.stringify(stateFacturar.facturaDetalles));
             render_listFacturar();
         }
     }
         for(var x=0; x<stateFacturar.facturaProductos.length; x=x+1){
             if(stateFacturar.facturaProductos[x].idPr===idP){
+                sessionStorage.removeItem('factProd');
                 stateFacturar.facturaProductos.splice(x,1);
+                sessionStorage.setItem('factProd', JSON.stringify(stateFacturar.facturaProductos));
             }
     }
 }

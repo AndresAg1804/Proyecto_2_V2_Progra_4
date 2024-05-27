@@ -39,7 +39,7 @@ async function loadedProductos(event) {
             document.getElementById("idPrp").value=statePro.item.idPr;
             render_listProductos(); //hacer
 
-            NO ESTA FUNCIONANDO EL SESSIONSTORAGE AQUI
+
         }*/
 
     fetchAndListProductos();
@@ -51,14 +51,14 @@ async function unloadedProductos(event){
     }
 }
 
-//aqui voy tengo que hacer el metodo en el RestController de productos
+
 function fetchAndListProductos(){ //metodo para obtener la lista actual de personas
     const request = new Request(apiPro+`/read`, {method: 'GET', headers: { }});
     (async ()=>{
         const response = await fetch(request);
         if (!response.ok) {errorMessage(response.status);return;}
         statePro.list = await response.json();
-        render_listProductos(); //una vez cargada la lista llama a la funcion de render_list
+        render_listProductos();
     })();
 }
 

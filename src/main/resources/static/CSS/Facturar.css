@@ -29,7 +29,7 @@ overflow-x: hidden;
 
 #speb{
     height:30px;
-    width:30px;
+    /*width:30px;*/
 }
 
 .box2{
@@ -50,7 +50,7 @@ overflow-x: hidden;
 
 .box2 label, .box2 input{
     display:inline-block;
-    width:100px;
+    /*width:100px;*/
 }
 
 .BoxSinTabla{

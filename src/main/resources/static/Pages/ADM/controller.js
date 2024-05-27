@@ -51,7 +51,7 @@ async function editApprove(uservar){
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(Usuario)});
     await (async () => {
-        const response = await fetch(request); //jsuto aqui, aqui se envia el request
+        const response = await fetch(request);
         if (!response.ok) {
             errorMessage(response.status);
             return;

@@ -25,6 +25,13 @@ async function  newUser(){
 
 
 function addNEWUSER(){
+    if(
+        document.getElementById("NUusern").value=="" ||
+        document.getElementById("NUpasw").value==""
+    ){
+        return;
+    }
+
     if(document.getElementById("admRadio").checked){
         let proveedor = {
             nombreP: '000',
@@ -52,6 +59,16 @@ function addNEWUSER(){
         })();
     }
     else{
+
+        if(
+            document.getElementById("NUusern").value=="" ||
+            document.getElementById("NUpasw").value=="" ||
+            document.getElementById("NUproveedorNombre").value=="" ||
+            document.getElementById("NUproveedorId").value==""
+        ){
+            return;
+        }
+
         let proveedor = {
             nombreP: document.getElementById("NUproveedorNombre").value,
             idP: document.getElementById("NUproveedorId").value
@@ -78,3 +95,4 @@ function addNEWUSER(){
         })();
     }
 }
+

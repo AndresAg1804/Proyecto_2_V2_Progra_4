@@ -203,6 +203,11 @@ function send2facturar(nombreP,idPr,precio,cant){
    // if(x==2){
   //  statePro.facturaDetalles_PRODUCTOS = JSON.parse(sessionStorage.getItem('factDet'));
   //  statePro.facturaProductos_PRODUCTOS = JSON.parse(sessionStorage.getItem('factProd'));
+    for(var x=0; x< statePro.facturaProductos_PRODUCTOS.length; x=x+1){
+        if(statePro.facturaProductos_PRODUCTOS[x].idPr===idPr){
+            return ;
+        }
+    }
         statePro.ProductosC.nombreP=nombreP;
         statePro.ProductosC.idPr=idPr;
         statePro.ProductosC.precio=precio;
